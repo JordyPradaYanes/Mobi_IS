@@ -5,6 +5,8 @@ import { NavbarComponent } from './ComponentesEstructurales/navbar/navbar.compon
 import { HeroComponent } from './ComponentesEstructurales/hero/hero.component';
 import { FooterComponent } from './ComponentesEstructurales/footer/footer.component';
 import { LoginComponent } from './ComponentesEstructurales/login/login.component';
+import { PropertyBenefitsComponent } from './ComponentesEstructurales/property-benefits/property-benefits.component';
+import { LocationPropertiesComponent } from './ComponentesEstructurales/location-properties/location-properties.component';
 //Componentes Propiedades
 import { FeaturedPropertiesComponent } from './ComponentesPropiedades/featured-properties/featured-properties.component';
 import { PropertyCardComponent } from './ComponentesPropiedades/property-card/property-card.component';
@@ -21,6 +23,8 @@ export const routes: Routes = [
     { path: 'hero', component: HeroComponent},
     { path: 'footer', component: FooterComponent},
     { path: 'login', component: LoginComponent},
+    { path: 'property-benefits', component: PropertyBenefitsComponent},
+    { path: 'location-properties', component: LocationPropertiesComponent},
     //Componentes Propiedades
     { path: 'featured-properties', component: FeaturedPropertiesComponent},
     { path: 'property-card', component: PropertyCardComponent},
