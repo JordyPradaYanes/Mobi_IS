@@ -1,9 +1,12 @@
 // Ensure the Main component is defined and exported
 import { Component } from '@angular/core';
+import { FooterComponent } from '../ComponentesEstructurales/footer/footer.component';
+import { NavbarComponent } from '../ComponentesEstructurales/navbar/navbar.component';
+import { HeroComponent } from '../ComponentesEstructurales/hero/hero.component';
 
 @Component({
   selector: 'app-main',
-  imports: [],
+  imports: [FooterComponent, NavbarComponent, HeroComponent],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })

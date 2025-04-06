@@ -1,32 +1,13 @@
 <div class="main-container">
     <!-- Cabecera -->
-    <header class="bg-blue-500 text-white p-4 shadow-md">
-      <h1 class="text-2xl font-bold">{{ title }}</h1>
-    </header>
+    <app-navbar></app-navbar>
   
     <!-- Contenido principal -->
     <main class="container mx-auto p-4">
-      <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-4">Bienvenido</h2>
-        <p class="text-gray-700">{{ welcomeMessage }}</p>
-      </section>
-  
-      <!-- Ejemplo de botón con evento -->
-      <button 
-        (click)="onButtonClick()"
-        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition"
-      >
-        Haz clic
-      </button>
-  
-      <!-- Mensaje condicional -->
-      <p *ngIf="showMessage" class="mt-4 text-blue-600">
-        ¡Has hecho clic en el botón!
-      </p>
+      <app-hero></app-hero>
+
     </main>
   
     <!-- Pie de página -->
-    <footer class="bg-gray-100 p-4 mt-8 text-center">
-      <p>&copy; {{ currentYear }} Mi App Angular</p>
-    </footer>
+    <app-footer></app-footer>
   </div>
