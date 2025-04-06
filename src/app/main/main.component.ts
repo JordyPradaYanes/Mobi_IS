@@ -3,10 +3,12 @@ import { Component } from '@angular/core';
 import { FooterComponent } from '../ComponentesEstructurales/footer/footer.component';
 import { NavbarComponent } from '../ComponentesEstructurales/navbar/navbar.component';
 import { HeroComponent } from '../ComponentesEstructurales/hero/hero.component';
+import { PropertyBenefitsComponent } from "../ComponentesEstructurales/property-benefits/property-benefits.component";
+import { LocationPropertiesComponent } from '../ComponentesEstructurales/location-properties/location-properties.component';
 
 @Component({
   selector: 'app-main',
-  imports: [FooterComponent, NavbarComponent, HeroComponent],
+  imports: [FooterComponent, NavbarComponent, HeroComponent, PropertyBenefitsComponent, LocationPropertiesComponent],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
