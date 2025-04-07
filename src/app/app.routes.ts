@@ -17,7 +17,6 @@ import { TestimonialsComponent } from './ComponentesInteracción/testimonials/te
 
 export const routes: Routes = [
 	{ path: '', component: MainComponent},
-    { path: '**', redirectTo: '' },
     //Componentes Estructurales
     { path: 'navbar', component: NavbarComponent},
     { path: 'hero', component: HeroComponent},
@@ -32,5 +31,7 @@ export const routes: Routes = [
     // Componentes de Interacción
     { path: 'testimonials', component: TestimonialsComponent},
     { path: 'contact-form', component: ContactFormComponent},
+
+    { path: '**', redirectTo: '' },
 
 ];
