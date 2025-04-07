@@ -25,53 +25,53 @@ export class FooterComponent implements OnInit {
   // Columnas del footer
   footerColumns = [
     {
-      title: 'SELL A HOME',
+      title: 'Vende tu casa',
       links: [
-        { name: 'Request an offer', url: '/request-offer' },
-        { name: 'Pricing', url: '/pricing' },
-        { name: 'Reviews', url: '/reviews' },
-        { name: 'Stories', url: '/stories' }
+        { name: 'Solicitar una oferta', url: '/request-offer' },
+        { name: 'Precios', url: '/pricing' },
+        { name: 'Reseñas', url: '/reviews' },
+        { name: 'Historias', url: '/stories' }
       ]
     },
     {
-      title: 'BUY A HOME',
+      title: 'Compra una casa',
       links: [
-        { name: 'Buy', url: '/buy' },
-        { name: 'Finance', url: '/finance' }
+        { name: 'Compra', url: '/buy' },
+        { name: 'Financia', url: '/finance' }
       ]
     },
     {
-      title: 'BUY, RENT AND SELL',
+      title: 'Compra, renta o vende',
       links: [
-        { name: 'Buy and sell properties', url: '/properties' },
-        { name: 'Rent home', url: '/rent' },
-        { name: 'Builder trade-up', url: '/builder-trade' }
+        { name: 'Compra y venta de propiedades', url: '/properties' },
+        { name: 'Renta una casa', url: '/rent' },
+        { name: 'Intercambio de constructores', url: '/builder-trade' }
       ]
     },
     {
-      title: 'TERMS & PRIVACY',
+      title: 'Terminos y condiciones',
       links: [
-        { name: 'Trust & Safety', url: '/trust-safety' },
-        { name: 'Terms of Service', url: '/terms' },
-        { name: 'Privacy Policy', url: '/privacy' }
+        { name: 'Confianza y seguridad', url: '/trust-safety' },
+        { name: 'Terminos del servicio', url: '/terms' },
+        { name: 'Politica de privacidad', url: '/privacy' }
       ]
     },
     {
-      title: 'ABOUT',
+      title: 'Sobre nosotros',
       links: [
-        { name: 'Company', url: '/company' },
-        { name: 'How it works', url: '/how-it-works' },
-        { name: 'Contact', url: '/contact' },
-        { name: 'Investors', url: '/investors' }
+        { name: 'Compañia', url: '/company' },
+        { name: 'Como funciona', url: '/how-it-works' },
+        { name: 'Contacto', url: '/contact' },
+        { name: 'Inversores', url: '/investors' }
       ]
     },
     {
-      title: 'RESOURCES',
+      title: 'Recursos',
       links: [
         { name: 'Blog', url: '/blog' },
-        { name: 'Guides', url: '/guides' },
+        { name: 'Guias', url: '/guides' },
         { name: 'FAQ', url: '/faq' },
-        { name: 'Help Center', url: '/help' }
+        { name: 'Centro de ayuda', url: '/help' }
       ]
     }
   ];
