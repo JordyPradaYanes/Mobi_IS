@@ -5,10 +5,12 @@ import { NavbarComponent } from '../ComponentesEstructurales/navbar/navbar.compo
 import { HeroComponent } from '../ComponentesEstructurales/hero/hero.component';
 import { PropertyBenefitsComponent } from "../ComponentesEstructurales/property-benefits/property-benefits.component";
 import { LocationPropertiesComponent } from '../ComponentesEstructurales/location-properties/location-properties.component';
+import { RegisterComponent } from '../ComponentesEstructurales/register/register.component';
 
 @Component({
   selector: 'app-main',
-  imports: [FooterComponent, NavbarComponent, HeroComponent, PropertyBenefitsComponent, LocationPropertiesComponent],
+  imports: [FooterComponent, NavbarComponent, HeroComponent, PropertyBenefitsComponent,
+     LocationPropertiesComponent],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })

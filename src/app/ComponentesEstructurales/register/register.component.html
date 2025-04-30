@@ -1,1 +1,62 @@
-<p>register works!</p>
+<div class="register-container">
+    <div class="register-form-container">
+      <h1 class="register-title">Crea tu cuenta</h1>
+      
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input type="text" formControlName="nombre" placeholder="Nombre" class="form-control" 
+                 [ngClass]="{'is-invalid': submitted && f.nombre.errors}">
+          <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+            <div *ngIf="f.nombre.errors.required">El nombre es requerido</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input type="text" formControlName="apellidos" placeholder="Apellidos" class="form-control"
+                 [ngClass]="{'is-invalid': submitted && f.apellidos.errors}">
+          <div *ngIf="submitted && f.apellidos.errors" class="invalid-feedback">
+            <div *ngIf="f.apellidos.errors.required">Los apellidos son requeridos</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input type="email" formControlName="email" placeholder="Email" class="form-control"
+                 [ngClass]="{'is-invalid': submitted && f.email.errors}">
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">El email es requerido</div>
+            <div *ngIf="f.email.errors.email">Email inválido</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input type="password" formControlName="contrasena" placeholder="Contraseña" class="form-control"
+                 [ngClass]="{'is-invalid': submitted && f.contrasena.errors}">
+          <div *ngIf="submitted && f.contrasena.errors" class="invalid-feedback">
+            <div *ngIf="f.contrasena.errors.required">La contraseña es requerida</div>
+            <div *ngIf="f.contrasena.errors.minlength">La contraseña debe tener al menos 6 caracteres</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input type="password" formControlName="confirmaContrasena" placeholder="Confirma tu contraseña" class="form-control"
+                 [ngClass]="{'is-invalid': submitted && f.confirmaContrasena.errors}">
+          <div *ngIf="submitted && f.confirmaContrasena.errors" class="invalid-feedback">
+            <div *ngIf="f.confirmaContrasena.errors.required">Confirmar contraseña es requerido</div>
+            <div *ngIf="f.confirmaContrasena.errors.mustMatch">Las contraseñas no coinciden</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <button type="submit" class="btn-ingresar">Ingresar</button>
+        </div>
+      </form>
+      
+      <div class="register-footer">
+        <p>¿Ya estás registrado? <a routerLink="/login" class="login-link">Login</a></p>
+      </div>
+    </div>
+    
+    <div class="register-image-container">
+      <!-- Imagen de la casa moderna mostrada en el lado derecho -->
+    </div>
+  </div>

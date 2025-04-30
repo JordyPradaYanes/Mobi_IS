@@ -5,6 +5,7 @@ import { NavbarComponent } from './ComponentesEstructurales/navbar/navbar.compon
 import { HeroComponent } from './ComponentesEstructurales/hero/hero.component';
 import { FooterComponent } from './ComponentesEstructurales/footer/footer.component';
 import { LoginComponent } from './ComponentesEstructurales/login/login.component';
+import { RegisterComponent } from './ComponentesEstructurales/register/register.component';
 import { PropertyBenefitsComponent } from './ComponentesEstructurales/property-benefits/property-benefits.component';
 import { LocationPropertiesComponent } from './ComponentesEstructurales/location-properties/location-properties.component';
 //Componentes Propiedades
@@ -22,6 +23,7 @@ export const routes: Routes = [
     { path: 'hero', component: HeroComponent},
     { path: 'footer', component: FooterComponent},
     { path: 'login', component: LoginComponent},
+    { path: 'register', component: RegisterComponent},
     { path: 'property-benefits', component: PropertyBenefitsComponent},
     { path: 'location-properties', component: LocationPropertiesComponent},
     //Componentes Propiedades
