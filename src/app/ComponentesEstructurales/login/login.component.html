@@ -1,0 +1,97 @@
+<form [formGroup]="FormLogin">
+  <div class="bg-[#eeeeff] h-screen flex items-center justify-center">
+    <div class="flex justify-center w-[100%]">
+      <div class="bg-white shadow-lg rounded-lg w-[60%] flex relative">
+        <div
+          class="absolute flex -top-5 -left-5 w-12 h-12 bg-indigo-500 rounded-full z-10"
+        >
+          <a href="" class="flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-[70%] text-white"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div class="w-[45%]">
+          <img
+            src="https://images.adsttc.com/media/images/55ba/d29e/e58e/ce6b/e300/0097/medium_jpg/PORTADA_1.jpg?1438306958"
+            alt=""
+          />
+        </div>
+        <div class="w-[55%]">
+          <div class="flex justify-center mt-15 mb-7">
+            <h1 class="font-bold text-3xl text-[#3730A3]">Inicia Sesión</h1>
+          </div>
+          <div class="w-[80%] my-0 mx-auto">
+            <div>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                placeholder="Email"
+                class="w-full mt-5 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div
+                *ngIf="
+                  FormLogin.get('email')?.invalid &&
+                  FormLogin.get('email')?.touched
+                "
+                class="mt-1"
+              >
+                <small
+                  *ngIf="FormLogin.get('email')?.errors?.['required']"
+                  class="text-red-900 font-semibold p-1 rounded-lg"
+                  >El email es obligatorio.</small
+                >
+                <small
+                  *ngIf="FormLogin.get('email')?.errors?.['email']"
+                  class="text-red-900 font-semibold p-1 rounded-lg"
+                  >Email inválido.</small
+                >
+              </div>
+            </div>
+            <div>
+              <input
+                id="password"
+                formControlName="password"
+                type="password"
+                placeholder="Contraseña"
+                class="w-full mt-5 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div *ngIf="FormLogin.get('password')?.invalid && FormLogin.get('password')?.touched" class="mt-1">
+                <small *ngIf="FormLogin.get('password')?.errors?.['required']" class=" text-red-900 font-semibold p-1 rounded-lg">La contraseña es obligatoria.</small>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-end mt-5 w-[90%]">
+            <a class="underline text-[#6366f1] text-sm"
+              >Olvidaste tu contraseña</a
+            >
+          </div>
+          <div class="flex justify-center mt-10">
+            <Button
+              class="cursor-pointer bg-[#6366f1] py-2 px-10 rounded-lg font-semibold text-white hover:bg-indigo-600"
+            >
+              Ingresar
+            </Button>
+          </div>
+          <div class="flex justify-center mt-5">
+            <h1 class="flex items-center text-[#666666] text-sm">
+              ¿No tienes Cuenta?
+            </h1>
+            <a
+              class="underline ml-2 text-[#3730A3] rounded-lg font-semibold"
+              >Registrate</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

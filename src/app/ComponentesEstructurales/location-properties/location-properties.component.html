@@ -1,0 +1,270 @@
+<div class="bg-gray-50 py-8 mt-5 rounded">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <!-- Título de la sección -->
+    <div class="text-center mb-8">
+      <h2
+        class="text-4xl font-bold mb-2"
+        [ngStyle]="{ color: colors.secondary }"
+      >
+        Según tu ubicación
+      </h2>
+      <p class="text-sm" [ngStyle]="{ color: colors.textLight }">
+        Explora las mejores propiedades entre la costa y montaña que se adaptan
+        a tu estilo
+      </p>
+    </div>
+    <!-- Botones de navegación -->
+    <div class="flex space-x-2 mb-6">
+      <button
+        class="bg-indigo-100 text-indigo-700 px-5 py-2 rounded-md flex items-center text-sm font-medium"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          />
+        </svg>
+        Alquilar
+      </button>
+      <button
+        class="text-gray-700 bg-white px-5 py-2 rounded-md flex items-center text-sm font-medium border border-gray-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+          />
+        </svg>
+        Compra
+      </button>
+      <button
+        class="text-gray-700 bg-white px-5 py-2 rounded-md flex items-center text-sm font-medium border border-gray-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 7l4-4m0 0l4 4m-4-4v18"
+          />
+        </svg>
+        Venta
+      </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="mb-8">
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 left-4 flex items-center pointer-events-none"
+        >
+          <svg
+            class="w-5 h-5 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          class="w-full py-2 pl-12 pr-4 border rounded-md text-sm"
+          [ngStyle]="{ 'border-color': colors.border }"
+        />
+      </div>
+    </div>
+
+    <!-- Grid de propiedades -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Propiedad Card -->
+      <div
+        *ngFor="let property of properties"
+        class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      >
+        <!-- Imagen de la propiedad -->
+        <div class="relative">
+          <img
+            [src]="property.imgSrc"
+            [alt]="property.title"
+            class="w-full h-48 object-cover"
+          />
+
+          <!-- Etiqueta Popular -->
+          <div
+            *ngIf="property.isPopular"
+            class="absolute top-3 left-3 bg-indigo-600 text-white text-xs px-3 py-1 rounded-md flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+            POPULAR
+          </div>
+
+          <!-- Botón de favorito -->
+          <button
+            (click)="toggleFavorite(property)"
+            class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm"
+            [ngStyle]="{
+              color: property.isFavorite
+                ? colors.favoriteActive
+                : colors.textLight
+            }"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                [attr.d]="
+                  property.isFavorite
+                    ? 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'
+                    : 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'
+                "
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Información de la propiedad -->
+        <div class="p-4">
+          <!-- Precio -->
+          <div class="flex justify-between items-center mb-2">
+            <div class="flex items-end">
+              <span class="text-indigo-600 font-bold text-xl">{{
+                formatPrice(property.price)
+              }}</span>
+              <span class="text-gray-500 text-sm ml-1"
+                >/{{ property.rentType }}</span
+              >
+            </div>
+            <button (click)="toggleFavorite(property)" class="text-gray-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Nombre y ubicación -->
+          <h3 class="font-bold text-gray-800 mb-1">{{ property.title }}</h3>
+          <p class="text-gray-500 text-sm mb-3">{{ property.location }}</p>
+
+          <!-- Características -->
+          <div class="flex items-center text-sm text-gray-500 space-x-4">
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-1 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2H5z"
+                />
+              </svg>
+              <span>{{ property.beds }} Beds</span>
+            </div>
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-1 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V5c0-1.1.9-2 2-2h4a2 2 0 012 2v2m-6 0h6M5 21V10c0-1.1.9-2 2-2h10a2 2 0 012 2v11m-4-6v3m0 0v3m0-3h3m-3 0h-3"
+                />
+              </svg>
+              <span>{{ property.baths }} Bathrooms</span>
+            </div>
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-1 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"
+                />
+              </svg>
+              <span>{{ property.area }} {{ property.areaUnit }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Botón para ver más -->
+    <div class="text-center mt-8">
+      <button class="px-6 py-3 rounded-md font-medium text-white transition-colors"
+              [ngStyle]="{'background-color': colors.accent}">
+        Descubre más propiedades
+      </button>
+    </div>
+  </div>
+</div>
