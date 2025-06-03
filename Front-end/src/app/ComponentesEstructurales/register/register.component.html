@@ -1,0 +1,161 @@
+<div class="register-container">
+  <div class="register-form-container">
+    <h1 class="register-title">Crea tu cuenta</h1>
+
+    <form [formGroup]="registerForm">
+      <div class="">
+        <div
+          *ngIf="mensaje"
+          class="m-4 p-3 bg-green-300 text-green-900 font-semibold rounded-lg text-center"
+        >
+          {{ mensaje }}
+        </div>
+        <div
+          *ngIf="errorMensaje"
+          class="m-4 p-3 bg-red-300 text-red-900 font-semibold rounded-lg text-center"
+        >
+          {{ errorMensaje }}
+        </div>
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="nombre"
+        />
+        <div
+          *ngIf="
+            registerForm.get('name')?.invalid &&
+            registerForm.get('name')?.touched
+          "
+          class="flex justify-center"
+        >
+          <small
+            *ngIf="registerForm.get('name')?.errors?.['required']"
+            class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+            >El nombre es obligatorio.</small
+          >
+          <small
+            *ngIf="registerForm.get('name')?.errors?.['minlength']"
+            class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+            >Minimos 3 caracteres.</small
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="lastname"
+          placeholder="Apellidos"
+        />
+       <div
+              *ngIf="
+                registerForm.get('lastname')?.invalid &&
+                registerForm.get('lastname')?.touched
+              "
+              class="flex justify-center"
+            >
+              <small
+                *ngIf="registerForm.get('lastname')?.errors?.['required']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+                >El apellido es obligatorio.</small
+              >
+              <small
+                *ngIf="registerForm.get('lastname')?.errors?.['minlength']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+                >Minimos 3 caracteres.</small
+              >
+            </div>
+        </div>
+
+
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Email"
+        />
+        <div
+              *ngIf="
+                registerForm.get('email')?.invalid &&
+                registerForm.get('email')?.touched
+              "
+              class="flex justify-center"
+            >
+              <small
+                *ngIf="registerForm.get('email')?.errors?.['required']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+                >El email es obligatorio.</small
+              >
+              <small
+                *ngIf="registerForm.get('email')?.errors?.['email']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+                >Email inválido.</small
+              >
+            </div>
+      </div>
+
+      <div>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Contraseña"
+        />
+        <div
+              *ngIf="
+                registerForm.get('password')?.invalid &&
+                registerForm.get('password')?.touched
+              "
+              class="flex justify-center mt-2"
+            >
+              <small
+                *ngIf="registerForm.get('password')?.errors?.['required']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+                >La contraseña es obligatoria.</small
+              >
+              <small
+                *ngIf="registerForm.get('password')?.errors?.['minlength']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+                >Mínimo 8 caracteres.</small
+              >
+              <small
+                *ngIf="registerForm.get('password')?.errors?.['pattern']"
+                class="bg-red-300 text-red-900 font-semibold p-1 rounded-lg"
+              >
+                Debe contener al menos una mayúscula, un número y un carácter
+                especial.
+              </small>
+            </div>
+        
+      </div>
+
+      <div class="">
+        <input
+          type="password"
+          placeholder="Confirma tu contraseña"
+        />
+      </div>
+
+      <div class="mt-5 flex justify-center">
+            <button
+              class="bg-amber-300 py-2 px-10 rounded-2xl font-semibold text-lg hover:bg-amber-400"
+              type="submit"
+              [disabled]="registerForm.invalid || cargando"
+              (click)="register()">
+              <span *ngIf="!cargando">Registrar</span>
+              <span *ngIf="cargando">Procesando...</span>
+            </button>
+          </div>
+    </form>
+
+    <div class="register-footer">
+      <p>
+        ¿Ya estás registrado?
+        <a routerLink="/login" class="login-link">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="register-image-container">
+    <!-- Imagen de la casa moderna mostrada en el lado derecho -->
+  </div>
+</div>
