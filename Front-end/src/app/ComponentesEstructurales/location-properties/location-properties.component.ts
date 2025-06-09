@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 interface Property {
   id: number;
   title: string;
   price: number;
-  rentType: string; // 'month', 'day', etc.
+  rentType: string;
   imgSrc: string;
   isFavorite: boolean;
   location: string;
@@ -20,26 +21,37 @@ interface Property {
 @Component({
   selector: 'app-location-properties',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './location-properties.component.html',
   styleUrls: ['./location-properties.component.css']
 })
 export class LocationPropertiesComponent implements OnInit {
   // Variables de colores y estilos
   colors = {
-    primary: '#6366f1', // Color morado para botones
-    secondary: '#1e293b', // Color para texto principal
-    textLight: '#64748b', // Texto secundario 
-    accent: '#3730a3', // Color para botón oscuro
-    lightBg: '#f8fafc', // Fondo gris claro
-    white: '#ffffff', // Color blanco
-    border: '#e2e8f0', // Color bordes
-    favoriteActive: '#ef4444', // Color para favoritos (rojo)
-    popularBg: '#6366f1', // Color de fondo para etiqueta "popular"
+    primary: '#6366f1',
+    secondary: '#1e293b',
+    textLight: '#64748b',
+    accent: '#3730a3',
+    lightBg: '#f8fafc',
+    white: '#ffffff',
+    border: '#e2e8f0',
+    favoriteActive: '#ef4444',
+    popularBg: '#6366f1',
   };
 
   // Filtros activos
-  activeFilter: 'todos' | 'venta' | 'alquiler' = 'todos';
+  activeFilter: 'todos' | 'venta' | 'alquiler' = 'alquiler';
+  searchTerm: string = '';
+  
+  // Filtros por características
+  minBeds: number | null = null;
+  maxBeds: number | null = null;
+  minBaths: number | null = null;
+  maxBaths: number | null = null;
+  minArea: number | null = null;
+  maxArea: number | null = null;
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
 
   // Propiedades mostradas
   properties: Property[] = [
@@ -147,16 +159,83 @@ export class LocationPropertiesComponent implements OnInit {
     property.isFavorite = !property.isFavorite;
   }
 
-  // Filtrar propiedades según el filtro activo
+  // Limpiar todos los filtros
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.minBeds = null;
+    this.maxBeds = null;
+    this.minBaths = null;
+    this.maxBaths = null;
+    this.minArea = null;
+    this.maxArea = null;
+    this.minPrice = null;
+    this.maxPrice = null;
+    this.activeFilter = 'todos';
+  }
+
+  // Filtrar propiedades según todos los criterios
   get filteredProperties(): Property[] {
-    if (this.activeFilter === 'todos') {
-      return this.properties;
+    let filtered = this.properties;
+
+    // Filtrar por tipo
+    if (this.activeFilter !== 'todos') {
+      filtered = filtered.filter(property => property.type === this.activeFilter);
     }
-    return this.properties.filter(property => property.type === this.activeFilter);
+
+    // Filtrar por término de búsqueda
+    if (this.searchTerm.trim()) {
+      const searchLower = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(property => 
+        property.title.toLowerCase().includes(searchLower) ||
+        property.location.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filtrar por habitaciones
+    if (this.minBeds !== null) {
+      filtered = filtered.filter(property => property.beds >= this.minBeds!);
+    }
+    if (this.maxBeds !== null) {
+      filtered = filtered.filter(property => property.beds <= this.maxBeds!);
+    }
+
+    // Filtrar por baños
+    if (this.minBaths !== null) {
+      filtered = filtered.filter(property => property.baths >= this.minBaths!);
+    }
+    if (this.maxBaths !== null) {
+      filtered = filtered.filter(property => property.baths <= this.maxBaths!);
+    }
+
+    // Filtrar por área
+    if (this.minArea !== null) {
+      filtered = filtered.filter(property => property.area >= this.minArea!);
+    }
+    if (this.maxArea !== null) {
+      filtered = filtered.filter(property => property.area <= this.maxArea!);
+    }
+
+    // Filtrar por precio
+    if (this.minPrice !== null) {
+      filtered = filtered.filter(property => property.price >= this.minPrice!);
+    }
+    if (this.maxPrice !== null) {
+      filtered = filtered.filter(property => property.price <= this.maxPrice!);
+    }
+
+    return filtered;
   }
 
   // Formatear precio
   formatPrice(price: number): string {
     return '$' + price.toLocaleString();
+  }
+
+  // Obtener conteo de propiedades por tipo
+  getPropertyCount(type: 'todos' | 'venta' | 'alquiler'): number {
+    if (type === 'todos') {
+      return this.properties.length;
+    }
+    return this.properties.filter(property => property.type === type).length;
   }
 }
