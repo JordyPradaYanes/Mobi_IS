@@ -1,0 +1,170 @@
+<form [formGroup]="registerForm">
+  <div class="bg-[#eeeeff] h-screen flex items-center justify-center">
+    <div class="flex justify-center w-[100%]">
+      <div class="bg-white shadow-lg rounded-lg w-[60%] flex relative">
+        <div class="absolute flex -top-5 -left-5 w-12 h-12 bg-indigo-500 rounded-full z-10">
+          <a href="" class="flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-[70%] text-white"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+              />
+            </svg>
+          </a>
+        </div>
+        
+        <div class="w-[45%]">
+          <img
+            src="https://images.adsttc.com/media/images/55ba/d29e/e58e/ce6b/e300/0097/medium_jpg/PORTADA_1.jpg?1438306958"
+            alt="Casa moderna"
+            class="w-full h-full object-cover rounded-l-lg"
+          />
+        </div>
+        
+        <div class="w-[55%] py-8">
+          <div class="flex justify-center mt-5 mb-7">
+            <h1 class="font-bold text-3xl text-[#3730A3]">Crea tu cuenta</h1>
+          </div>
+
+          <!-- Mensajes de éxito/error -->
+          <div class="w-[80%] my-0 mx-auto">
+            <div *ngIf="mensaje" class="mb-4 p-3 bg-green-100 text-green-800 rounded-lg text-center font-semibold text-sm">
+              {{ mensaje }}
+            </div>
+            <div *ngIf="errorMensaje" class="mb-4 p-3 bg-red-100 text-red-800 rounded-lg text-center font-semibold text-sm">
+              {{ errorMensaje }}
+            </div>
+
+            <!-- Campo Nombre -->
+            <div>
+              <input
+                id="name"
+                formControlName="name"
+                type="text"
+                placeholder="Nombre"
+                class="w-full mt-3 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="mt-1">
+                <small *ngIf="registerForm.get('name')?.errors?.['required']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  El nombre es obligatorio.
+                </small>
+                <small *ngIf="registerForm.get('name')?.errors?.['minlength']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Mínimo 3 caracteres.
+                </small>
+              </div>
+            </div>
+
+            <!-- Campo Apellidos -->
+            <div>
+              <input
+                id="lastname"
+                formControlName="lastname"
+                type="text"
+                placeholder="Apellidos"
+                class="w-full mt-3 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" class="mt-1">
+                <small *ngIf="registerForm.get('lastname')?.errors?.['required']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  El apellido es obligatorio.
+                </small>
+                <small *ngIf="registerForm.get('lastname')?.errors?.['minlength']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Mínimo 3 caracteres.
+                </small>
+              </div>
+            </div>
+
+            <!-- Campo Email -->
+            <div>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                placeholder="Email"
+                class="w-full mt-3 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="mt-1">
+                <small *ngIf="registerForm.get('email')?.errors?.['required']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  El email es obligatorio.
+                </small>
+                <small *ngIf="registerForm.get('email')?.errors?.['email']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Email inválido.
+                </small>
+              </div>
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div>
+              <input
+                id="password"
+                formControlName="password"
+                type="password"
+                placeholder="Contraseña"
+                class="w-full mt-3 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="mt-1">
+                <small *ngIf="registerForm.get('password')?.errors?.['required']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  La contraseña es obligatoria.
+                </small>
+                <small *ngIf="registerForm.get('password')?.errors?.['minlength']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Mínimo 8 caracteres.
+                </small>
+                <small *ngIf="registerForm.get('password')?.errors?.['pattern']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Debe contener al menos una mayúscula, un número y un carácter especial.
+                </small>
+              </div>
+            </div>
+
+            <!-- Campo Confirmar Contraseña -->
+            <div>
+              <input
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                type="password"
+                placeholder="Confirma tu contraseña"
+                class="w-full mt-3 p-3 rounded-lg bg-[#eeeeff] text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
+              />
+              <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="mt-1">
+                <small *ngIf="registerForm.get('confirmPassword')?.errors?.['required']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Confirma tu contraseña.
+                </small>
+                <small *ngIf="registerForm.get('confirmPassword')?.errors?.['mismatch']" class="text-red-900 font-semibold p-1 rounded-lg">
+                  Las contraseñas no coinciden.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de registro -->
+          <div class="flex justify-center mt-8">
+            <button
+              type="submit"
+              class="cursor-pointer bg-[#6366f1] py-2 px-10 rounded-lg font-semibold text-white hover:bg-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed"
+              [disabled]="registerForm.invalid || cargando"
+              (click)="register()"
+            >
+              <span *ngIf="!cargando">Registrar</span>
+              <span *ngIf="cargando">Procesando...</span>
+            </button>
+          </div>
+
+          <!-- Footer con enlace a login -->
+          <div class="flex justify-center mt-5">
+            <h1 class="flex items-center text-[#666666] text-sm">
+              ¿Ya tienes cuenta?
+            </h1>
+            <a style="cursor: pointer;"
+              href="/login"
+              class="underline ml-2 text-[#3730A3] rounded-lg font-semibold cursor-pointer"
+            >
+              Inicia Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
