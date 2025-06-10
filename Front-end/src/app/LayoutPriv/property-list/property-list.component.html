@@ -1,0 +1,224 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Propiedades</h1>
+          <p class="text-gray-600 mt-1">
+            {{ filteredProperties.length }} propiedades encontradas
+          </p>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="flex-1 max-w-md">
+          <div class="relative">
+            <input
+              type="text"
+              formControlName="searchText"
+              placeholder="Buscar propiedades..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Toggle -->
+        <button
+          (click)="toggleFilters()"
+          class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+          </svg>
+          Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Panel -->
+  <div class="bg-white border-b" [class.hidden]="!showFilters">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <form [formGroup]="filterForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Tipo de Operación -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Operación</label>
+            <select formControlName="type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Todos</option>
+              <option value="SALE">Venta</option>
+              <option value="RENT">Arriendo</option>
+            </select>
+          </div>
+
+          <!-- Tipo de Propiedad -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Propiedad</label>
+            <select formControlName="propertyType" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Todos</option>
+              <option value="HOUSE">Casa</option>
+              <option value="APARTMENT">Departamento</option>
+              <option value="OFFICE">Oficina</option>
+              <option value="LAND">Terreno</option>
+            </select>
+          </div>
+
+          <!-- Ciudad -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ciudad</label>
+            <select formControlName="city" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Todas</option>
+              <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+            </select>
+          </div>
+
+          <!-- Habitaciones -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Habitaciones</label>
+            <div class="flex space-x-2">
+              <select formControlName="minBedrooms" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Min</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+              </select>
+              <select formControlName="maxBedrooms" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Max</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5+</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Precio -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Precio Mínimo</label>
+            <input
+              type="number"
+              formControlName="minPrice"
+              placeholder="Precio mínimo"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Precio Máximo</label>
+            <input
+              type="number"
+              formControlName="maxPrice"
+              placeholder="Precio máximo"
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+          </div>
+        </div>
+
+        <!-- Amenidades -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-3">Amenidades</label>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <label *ngFor="let amenity of amenitiesList" class="flex items-center">
+              <input
+                type="checkbox"
+                [checked]="isAmenitySelected(amenity)"
+                (change)="onAmenityChange(amenity, $event)"
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              >
+              <span class="ml-2 text-sm text-gray-700">{{ amenity }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Actions -->
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            (click)="clearFilters()"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Limpiar Filtros
+          </button>
+          <button
+            type="button"
+            (click)="toggleFilters()"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Aplicar Filtros
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && filteredProperties.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No se encontraron propiedades</h3>
+      <p class="mt-1 text-sm text-gray-500">Intenta ajustar tus filtros de búsqueda.</p>
+    </div>
+
+    <!-- Properties Grid -->
+    <div *ngIf="!loading && filteredProperties.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-property-card
+        *ngFor="let property of paginatedProperties"
+        [property]="property"
+        class="transform transition-transform duration-200 hover:scale-105"
+      ></app-property-card>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="!loading && totalPages > 1" class="mt-8 flex justify-center">
+      <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+        <button
+          (click)="onPageChange(currentPage - 1)"
+          [disabled]="currentPage === 1"
+          class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span class="sr-only">Anterior</span>
+          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          (click)="onPageChange(i + 1)"
+          [class]="currentPage === i + 1 ? 
+            'relative inline-flex items-center px-4 py-2 border border-blue-500 bg-blue-50 text-sm font-medium text-blue-600' :
+            'relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50'"
+        >
+          {{ i + 1 }}
+        </button>
+
+        <button
+          (click)="onPageChange(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+          class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span class="sr-only">Siguiente</span>
+          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>

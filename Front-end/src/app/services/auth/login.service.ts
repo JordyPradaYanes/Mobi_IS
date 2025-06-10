@@ -2,7 +2,7 @@ import { Injectable,Inject,PLATFORM_ID } from '@angular/core';
 import { LoginRequest } from './loginRequest';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError, BehaviorSubject, tap, ReplaySubject } from 'rxjs';
-import { User } from './user';
+import { User } from '../user/user';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({

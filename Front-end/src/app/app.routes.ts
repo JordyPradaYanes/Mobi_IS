@@ -16,7 +16,7 @@ import { FilterSidebarComponent } from './ComponentesPropiedades/filter-sidebar/
 //Componentes de Interacción
 import { ContactFormComponent } from './ComponentesInteracción/contact-form/contact-form.component';
 import { TestimonialsComponent } from './ComponentesInteracción/testimonials/testimonials.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './LayoutPriv/dashboard/dashboard.component';
 
 export const routes: Routes = [
 	{ path: '', component: MainComponent},

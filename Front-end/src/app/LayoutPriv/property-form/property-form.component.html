@@ -1,0 +1,345 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h1 class="text-2xl font-bold text-gray-900">
+        {{ isEditMode ? 'Editar Propiedad' : 'Publicar Nueva Propiedad' }}
+      </h1>
+      <p class="text-gray-600 mt-2">
+        {{ isEditMode ? 'Actualiza la información de tu propiedad' : 'Completa todos los campos para publicar tu propiedad' }}
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Basic Information -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Información Básica</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Title -->
+          <div class="md:col-span-2">
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+              Título de la Propiedad *
+            </label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              placeholder="Ej: Casa moderna con vista al mar"
+              [class]="'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ' + 
+                       (isFieldInvalid('title') ? 'border-red-300' : 'border-gray-300')"
+            >
+            <div *ngIf="isFieldInvalid('title')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('title') }}
+            </div>
+          </div>
+
+          <!-- Operation Type -->
+          <div>
+            <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de Operación *
+            </label>
+            <select
+              id="type"
+              formControlName="type"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="SALE">Venta</option>
+              <option value="RENT">Arriendo</option>
+            </select>
+          </div>
+
+          <!-- Property Type -->
+          <div>
+            <label for="propertyType" class="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de Propiedad *
+            </label>
+            <select
+              id="propertyType"
+              formControlName="propertyType"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="HOUSE">Casa</option>
+              <option value="APARTMENT">Departamento</option>
+              <option value="OFFICE">Oficina</option>
+              <option value="LAND">Terreno</option>
+            </select>
+          </div>
+
+          <!-- Price -->
+          <div>
+            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+              Precio *
+            </label>
+            <div class="relative">
+              <span class="absolute left-3 top-2 text-gray-500">$</span>
+              <input
+                type="number"
+                id="price"
+                formControlName="price"
+                placeholder="0"
+                [class]="'w-full pl-8 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ' + 
+                         (isFieldInvalid('price') ? 'border-red-300' : 'border-gray-300')"
+              >
+            </div>
+            <div *ngIf="isFieldInvalid('price')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('price') }}
+            </div>
+          </div>
+
+          <!-- Area -->
+          <div>
+            <label for="area" class="block text-sm font-medium text-gray-700 mb-2">
+              Área (m²) *
+            </label>
+            <input
+              type="number"
+              id="area"
+              formControlName="area"
+              placeholder="0"
+              [class]="'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ' + 
+                       (isFieldInvalid('area') ? 'border-red-300' : 'border-gray-300')"
+            >
+            <div *ngIf="isFieldInvalid('area')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('area') }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Details -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Detalles de la Propiedad</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Bedrooms -->
+          <div>
+            <label for="bedrooms" class="block text-sm font-medium text-gray-700 mb-2">
+              Habitaciones
+            </label>
+            <select
+              id="bedrooms"
+              formControlName="bedrooms"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Seleccionar</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6+</option>
+            </select>
+          </div>
+
+          <!-- Bathrooms -->
+          <div>
+            <label for="bathrooms" class="block text-sm font-medium text-gray-700 mb-2">
+              Baños
+            </label>
+            <select
+              id="bathrooms"
+              formControlName="bathrooms"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Seleccionar</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5+</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mt-6">
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+            Descripción *
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            placeholder="Describe tu propiedad en detalle..."
+            [class]="'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ' + 
+                     (isFieldInvalid('description') ? 'border-red-300' : 'border-gray-300')"
+          ></textarea>
+          <div *ngIf="isFieldInvalid('description')" class="mt-1 text-sm text-red-600">
+            {{ getFieldError('description') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Ubicación</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Address -->
+          <div class="md:col-span-2">
+            <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+              Dirección *
+            </label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              placeholder="Ej: Av. Providencia 1234"
+              [class]="'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ' + 
+                       (isFieldInvalid('address') ? 'border-red-300' : 'border-gray-300')"
+            >
+            <div *ngIf="isFieldInvalid('address')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('address') }}
+            </div>
+          </div>
+
+          <!-- City -->
+          <div>
+            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+              Barrio *
+            </label>
+            <select
+              id="city"
+              formControlName="city"
+              [class]="'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ' + 
+                       (isFieldInvalid('city') ? 'border-red-300' : 'border-gray-300')"
+            >
+              <option value="">Seleccionar Barrio</option>
+              <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+            </select>
+            <div *ngIf="isFieldInvalid('city')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('city') }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Imágenes</h2>
+        
+        <!-- Upload Area -->
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            (change)="onFileSelect($event)"
+            class="hidden"
+            #fileInput
+          >
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+          <div class="mt-4">
+            <button
+              type="button"
+              (click)="fileInput.click()"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Seleccionar Imágenes
+            </button>
+            <p class="mt-2 text-sm text-gray-500">
+              PNG, JPG, GIF hasta 10MB cada una. Máximo 10 imágenes.
+            </p>
+          </div>
+        </div>
+
+        <!-- Image Previews -->
+        <div *ngIf="existingImages.length > 0 || imagePreviewUrls.length > 0" class="mt-6">
+          <h3 class="text-sm font-medium text-gray-700 mb-3">Imágenes Seleccionadas</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Existing Images -->
+            <div *ngFor="let image of existingImages; let i = index" class="relative">
+              <img [src]="image" [alt]="'Imagen ' + (i + 1)" class="w-full h-24 object-cover rounded-lg">
+              <button
+                type="button"
+                (click)="removeImage(i, true)"
+                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 focus:outline-none"
+              >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- New Images -->
+            <div *ngFor="let image of imagePreviewUrls; let i = index" class="relative">
+              <img [src]="image" [alt]="'Nueva imagen ' + (i + 1)" class="w-full h-24 object-cover rounded-lg">
+              <button
+                type="button"
+                (click)="removeImage(i, false)"
+                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 focus:outline-none"
+              >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Amenidades</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <label *ngFor="let amenity of amenitiesList" class="flex items-center">
+            <input
+              type="checkbox"
+              [checked]="isAmenitySelected(amenity)"
+              (change)="onAmenityChange(amenity, $event)"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            >
+            <span class="ml-2 text-sm text-gray-700">{{ amenity }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-3">
+          <button
+            type="button"
+            (click)="cancel()"
+            class="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Cancelar
+          </button>
+          
+          <button
+            type="button"
+            (click)="loadDraft()"
+            class="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Cargar Borrador
+          </button>
+          
+          <button
+            type="submit"
+            [disabled]="submitting || uploadingImages"
+            class="w-full sm:w-auto px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span *ngIf="submitting || uploadingImages" class="inline-flex items-center">
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ uploadingImages ? 'Subiendo imágenes...' : 'Guardando...' }}
+            </span>
+            <span *ngIf="!submitting && !uploadingImages">
+              {{ isEditMode ? 'Actualizar Propiedad' : 'Publicar Propiedad' }}
+            </span>
+          </button>
+        </div>
+        
+        <div class="mt-4 text-sm text-gray-500">
+          <p>* Los cambios se guardan automáticamente como borrador</p>
+          <p>* La propiedad será enviada para aprobación antes de ser publicada</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

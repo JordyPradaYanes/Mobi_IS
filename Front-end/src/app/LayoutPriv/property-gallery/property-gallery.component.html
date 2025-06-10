@@ -1,0 +1,125 @@
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <!-- Main Image -->
+  <div class="relative">
+    <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+      <img
+        [src]="currentImage"
+        [alt]="'Imagen ' + (currentImageIndex + 1)"
+        (error)="onImageError($event)"
+        (click)="openModal(currentImageIndex)"
+        class="w-full h-96 object-cover cursor-pointer hover:opacity-95 transition-opacity"
+      >
+    </div>
+    
+    <!-- Image Counter -->
+    <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg text-sm">
+      {{ currentImageIndex + 1 }} / {{ images.length }}
+    </div>
+
+    <!-- Navigation Arrows (for main image) -->
+    <button
+      *ngIf="images.length > 1"
+      (click)="selectImage(currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1)"
+      class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+    
+    <button
+      *ngIf="images.length > 1"
+      (click)="selectImage(currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0)"
+      class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+
+    <!-- Zoom Icon -->
+    <button
+      (click)="openModal(currentImageIndex)"
+      class="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all"
+    >
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Thumbnails -->
+  <div *ngIf="images.length > 1" class="p-4">
+    <div class="flex space-x-2 overflow-x-auto">
+      <button
+        *ngFor="let image of images; let i = index"
+        (click)="selectImage(i)"
+        [class]="'flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ' + 
+                 (i === currentImageIndex ? 'border-blue-500' : 'border-gray-200 hover:border-gray-300')"
+      >
+        <img
+          [src]="image"
+          [alt]="'Miniatura ' + (i + 1)"
+          (error)="onImageError($event)"
+          class="w-full h-full object-cover"
+        >
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
+  (click)="closeModal()"
+  (keydown)="onKeydown($event)"
+  tabindex="0"
+>
+  <div class="relative max-w-7xl max-h-full p-4">
+    <!-- Close Button -->
+    <button
+      (click)="closeModal()"
+      class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Modal Image -->
+    <img
+      [src]="modalImage"
+      [alt]="'Imagen ' + (modalImageIndex + 1)"
+      (error)="onImageError($event)"
+      (click)="$event.stopPropagation()"
+      class="max-w-full max-h-full object-contain"
+    >
+
+    <!-- Navigation Arrows -->
+    <button
+      *ngIf="images.length > 1"
+      (click)="previousImage(); $event.stopPropagation()"
+      class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all"
+    >
+      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+
+    <button
+      *ngIf="images.length > 1"
+      (click)="nextImage(); $event.stopPropagation()"
+      class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all"
+    >
+      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+
+    <!-- Image Counter -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
+      {{ modalImageIndex + 1 }} / {{ images.length }}
+    </div>
+  </div>
+</div>
