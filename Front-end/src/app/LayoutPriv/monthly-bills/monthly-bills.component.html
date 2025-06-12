@@ -1,0 +1,597 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Facturación Mensual</h1>
+          <p class="text-gray-600">Gestiona tus pagos de arriendo y cargos adicionales</p>
+        </div>
+        <div class="flex space-x-3">
+          <button
+            (click)="openAutoPayModal()"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Configurar Autopago
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen financiero -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-blue-800">Total Facturas</p>
+              <p class="text-xl font-bold text-blue-900">{{ billsSummary.total }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-yellow-100 rounded-lg">
+              <svg class="h-5 w-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-yellow-800">Pendientes</p>
+              <p class="text-xl font-bold text-yellow-900">{{ billsSummary.pending }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-green-100 rounded-lg">
+              <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-green-800">Pagadas</p>
+              <p class="text-xl font-bold text-green-900">{{ billsSummary.paid }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-red-100 rounded-lg">
+              <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-red-800">Vencidas</p>
+              <p class="text-xl font-bold text-red-900">{{ billsSummary.overdue }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+          <div class="flex items-center">
+            <div class="p-2 bg-purple-100 rounded-lg">
+              <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-purple-800">Por Pagar</p>
+              <p class="text-lg font-bold text-purple-900">{{ formatPrice(billsSummary.pendingAmount) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Filtros -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+          <input
+            type="text"
+            [(ngModel)]="filters.search"
+            (ngModelChange)="onFilterChange()"
+            placeholder="Propiedad, dirección..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+          <select
+            [(ngModel)]="filters.status"
+            (ngModelChange)="onFilterChange()"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Todos</option>
+            <option value="PENDING">Pendiente</option>
+            <option value="PAID">Pagado</option>
+            <option value="OVERDUE">Vencido</option>
+            <option value="PARTIALLY_PAID">Pago Parcial</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Año</label>
+          <select
+            [(ngModel)]="filters.year"
+            (ngModelChange)="onFilterChange()"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option *ngFor="let year of availableYears" [value]="year">{{ year }}</option>
+          </select>
+        </div>
+
+        <div class="flex items-end">
+          <button
+            (click)="clearFilters()"
+            class="w-full px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      <p class="mt-2 text-gray-600">Cargando facturas...</p>
+    </div>
+
+    <!-- Lista de facturas -->
+    <div *ngIf="!isLoading" class="space-y-4">
+      <div
+        *ngFor="let bill of filteredBills"
+        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+      >
+        <div class="p-6">
+          <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+            
+            <!-- Información de la factura -->
+            <div class="flex-1">
+              <div class="flex items-start space-x-4">
+                <img
+                  [src]="bill.rental.property.images[0]"
+                  [alt]="bill.rental.property.title"
+                  class="h-16 w-16 rounded-lg object-cover flex-shrink-0"
+                >
+                
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center space-x-3 mb-2">
+                    <h3 class="text-lg font-semibold text-gray-900 truncate">
+                      {{ bill.rental.property.title }}
+                    </h3>
+                    <span [class]="getStatusBadgeClass(bill.status)">
+                      {{ getStatusText(bill.status) }}
+                    </span>
+                  </div>
+                  
+                  <p class="text-sm text-gray-600 mb-2">{{ bill.rental.property.address }}</p>
+                  
+                  <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                    <span class="font-medium">{{ getMonthName(bill.month) }} {{ bill.year }}</span>
+                    <span>Vence: {{ formatDate(bill.dueDate) }}</span>
+                    <span *ngIf="bill.status === 'OVERDUE'" class="text-red-600 font-medium">
+                      {{ getDaysOverdue(bill.dueDate) }} días de retraso
+                    </span>
+                    <span *ngIf="bill.paidDate" class="text-green-600">
+                      Pagado: {{ formatDate(bill.paidDate) }}
+                    </span>
+                  </div>
+
+                  <!-- Desglose de cargos -->
+                  <div class="bg-gray-50 rounded-lg p-3 mb-3">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">Desglose de cargos</h4>
+                    <div class="space-y-1 text-sm">
+                      <div class="flex justify-between">
+                        <span>Arriendo base:</span>
+                        <span class="font-medium">{{ formatPrice(bill.rentAmount) }}</span>
+                      </div>
+                      <div *ngFor="let charge of bill.additionalCharges" class="flex justify-between">
+                        <span>{{ charge.description }}:</span>
+                        <span class="font-medium">{{ formatPrice(charge.amount) }}</span>
+                      </div>
+                      <div *ngIf="bill.lateFeesApplied > 0" class="flex justify-between text-red-600">
+                        <span>Mora:</span>
+                        <span class="font-medium">{{ formatPrice(bill.lateFeesApplied) }}</span>
+                      </div>
+                      <hr class="my-2">
+                      <div class="flex justify-between font-bold text-lg">
+                        <span>Total:</span>
+                        <span class="text-indigo-600">{{ formatPrice(bill.totalAmount) }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Notas -->
+                  <div *ngIf="bill.notes" class="text-sm text-gray-600">
+                    <span class="font-medium">Notas:</span> {{ bill.notes }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel de acciones -->
+            <div class="mt-4 lg:mt-0 lg:ml-6 flex-shrink-0">
+              <div class="flex flex-col space-y-3">
+                
+                <!-- Botones de acción según estado -->
+                <div class="flex space-x-2" *ngIf="bill.status === 'PENDING' || bill.status === 'OVERDUE'">
+                  <button
+                    (click)="openPaymentModal(bill)"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
+                  >
+                    Pagar Ahora
+                  </button>
+                </div>
+                
+                <div class="flex space-x-2">
+                  <button
+                    *ngIf="bill.status === 'PAID'"
+                    (click)="downloadReceipt(bill.id)"
+                    class="px-3 py-2 bg-blue-100 text-blue-700 rounded-md text-sm font-medium hover:bg-blue-200 transition-colors"
+                  >
+                    Descargar Recibo
+                  </button>
+                  
+                  <button
+                    (click)="openDisputeModal(bill)"
+                    class="px-3 py-2 bg-yellow-100 text-yellow-700 rounded-md text-sm font-medium hover:bg-yellow-200 transition-colors"
+                  >
+                    Disputar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && filteredBills.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No hay facturas</h3>
+      <p class="mt-1 text-sm text-gray-500">
+        <span *ngIf="filters.status || filters.search">No se encontraron facturas con los filtros aplicados.</span>
+        <span *ngIf="!filters.status && !filters.search">No tienes facturas generadas aún.</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Pago -->
+<div *ngIf="showPaymentModal && selectedBill" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-2/3 shadow-lg rounded-md bg-white">
+    <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+      <div class="mt-3">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">
+            Pagar Factura - {{ getMonthName(selectedBill.month) }} {{ selectedBill.year }}
+          </h3>
+          <button
+            type="button"
+            (click)="closePaymentModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Resumen de la factura -->
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+          <h4 class="text-sm font-medium text-gray-700 mb-2">Resumen de la factura</h4>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-600">{{ selectedBill.rental.property.title }}</span>
+            <span class="text-lg font-bold text-indigo-600">{{ formatPrice(selectedBill.totalAmount) }}</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-1">
+            Vence: {{ formatDate(selectedBill.dueDate) }}
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <!-- Monto a pagar -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Monto a pagar *</label>
+            <input
+              type="number"
+              formControlName="amount"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              [placeholder]="formatPrice(selectedBill.totalAmount)"
+            >
+            <div *ngIf="paymentForm.get('amount')?.invalid && paymentForm.get('amount')?.touched" class="mt-1 text-sm text-red-600">
+              El monto es obligatorio y debe ser mayor a 0
+            </div>
+          </div>
+
+          <!-- Método de pago -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Método de pago *</label>
+            <select
+              formControlName="paymentMethod"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="">Seleccionar método</option>
+              <option value="card">Tarjeta de crédito/débito</option>
+              <option value="transfer">Transferencia bancaria</option>
+              <option value="pse">PSE</option>
+            </select>
+          </div>
+
+          <!-- Campos de tarjeta -->
+          <div *ngIf="paymentForm.get('paymentMethod')?.value === 'card'" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Número de tarjeta</label>
+              <input
+                type="text"
+                formControlName="cardNumber"
+                placeholder="1234 5678 9012 3456"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de vencimiento</label>
+                <input
+                  type="text"
+                  formControlName="expiryDate"
+                  placeholder="MM/AA"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                <input
+                  type="text"
+                  formControlName="cvv"
+                  placeholder="123"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Campos de transferencia -->
+          <div *ngIf="paymentForm.get('paymentMethod')?.value === 'transfer'" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Cuenta bancaria</label>
+              <input
+                type="text"
+                formControlName="bankAccount"
+                placeholder="Número de cuenta"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-3 mt-6">
+          <button
+            type="button"
+            (click)="closePaymentModal()"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="paymentForm.invalid || isProcessingPayment"
+            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span *ngIf="isProcessingPayment">Procesando...</span>
+            <span *ngIf="!isProcessingPayment">Procesar Pago</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Disputa -->
+<div *ngIf="showDisputeModal && selectedBill" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
+    <form [formGroup]="disputeForm" (ngSubmit)="submitDispute()">
+      <div class="mt-3">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">
+            Disputar Factura - {{ getMonthName(selectedBill.month) }} {{ selectedBill.year }}
+          </h3>
+          <button
+            type="button"
+            (click)="closeDisputeModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Motivo de la disputa *</label>
+            <select
+              formControlName="reason"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="">Seleccionar motivo</option>
+              <option value="incorrect-amount">Monto incorrecto</option>
+              <option value="duplicate-charge">Cargo duplicado</option>
+              <option value="service-not-received">Servicio no recibido</option>
+              <option value="billing-error">Error de facturación</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Descripción detallada *</label>
+            <textarea
+              formControlName="description"
+              rows="4"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Explica en detalle el motivo de tu disputa..."
+            ></textarea>
+            <div *ngIf="disputeForm.get('description')?.invalid && disputeForm.get('description')?.touched" class="mt-1 text-sm text-red-600">
+              La descripción es obligatoria (mínimo 10 caracteres)
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Evidencia (opcional)</label>
+            <input
+              type="file"
+              formControlName="evidence"
+              accept=".pdf,.jpg,.jpeg,.png"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+            <p class="text-xs text-gray-500 mt-1">Formatos permitidos: PDF, JPG, PNG (máx. 5MB)</p>
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-3 mt-6">
+          <button
+            type="button"
+            (click)="closeDisputeModal()"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="disputeForm.invalid"
+            class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Enviar Disputa
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de Configuración de Autopago -->
+<div *ngIf="showAutoPayModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
+    <form [formGroup]="autoPayForm" (ngSubmit)="setupAutoPay()">
+      <div class="mt-3">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-medium text-gray-900">Configurar Pago Automático</h3>
+          <button
+            type="button"
+            (click)="closeAutoPayModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                formControlName="enabled"
+                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              >
+              <span class="ml-2 text-sm text-gray-700">Activar pago automático</span>
+            </label>
+          </div>
+
+          <div *ngIf="autoPayForm.get('enabled')?.value">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Método de pago *</label>
+              <select
+                formControlName="paymentMethod"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="">Seleccionar método</option>
+                <option value="card">Tarjeta de crédito/débito</option>
+                <option value="transfer">Transferencia bancaria</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Día del mes para el pago</label>
+              <select
+                formControlName="dayOfMonth"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option *ngFor="let day of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]" [value]="day">
+                  Día {{ day }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Campos específicos del método de pago -->
+            <div *ngIf="autoPayForm.get('paymentMethod')?.value === 'card'">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Número de tarjeta</label>
+              <input
+                type="text"
+                formControlName="cardNumber"
+                placeholder="1234 5678 9012 3456"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+            </div>
+
+            <div *ngIf="autoPayForm.get('paymentMethod')?.value === 'transfer'">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Cuenta bancaria</label>
+              <input
+                type="text"
+                formControlName="bankAccount"
+                placeholder="Número de cuenta"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <h4 class="text-sm font-medium text-blue-800 mb-2">Información importante</h4>
+              <ul class="text-sm text-blue-700 space-y-1">
+                <li>• El pago se realizará automáticamente cada mes</li>
+                <li>• Recibirás una notificación antes del cargo</li>
+                <li>• Puedes cancelar en cualquier momento</li>
+                <li>• Si el pago falla, recibirás una alerta</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-3 mt-6">
+          <button
+            type="button"
+            (click)="closeAutoPayModal()"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="autoPayForm.invalid"
+            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Configurar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -13,10 +13,13 @@ export interface Property {
   images: string[]
   amenities: string[]
   isApproved: boolean
-  status: "PENDING" | "APPROVED" | "REJECTED" | "SOLD" | "RENTED"
+  status: "PENDING" | "APPROVED" | "REJECTED" | "SOLD" | "RENTED" | "UNDER_REVIEW"
   createdAt: Date
   updatedAt: Date
   ownerId: string
+  listingDate: Date;
+  rentedDate?: Date;
+  soldDate?: Date;
 }
 
 export interface PropertyFilter {
@@ -29,4 +32,15 @@ export interface PropertyFilter {
   maxBedrooms?: number
   amenities?: string[]
   searchText?: string
+}
+
+// Extensión para el sistema de aprobación (solo para administradores)
+export interface PropertyWithOwnerInfo extends Property {
+  ownerName?: string
+  ownerEmail?: string
+  ownerPhone?: string
+  submittedAt?: Date
+  reviewedAt?: Date
+  reviewedBy?: string
+  timesPending?: number
 }

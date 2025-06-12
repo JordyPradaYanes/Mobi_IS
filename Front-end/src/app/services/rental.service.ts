@@ -1,0 +1,463 @@
+import { Injectable } from "@angular/core"
+import { type Observable, of, delay } from "rxjs"
+import type { Rental, MaintenanceRequest, RentalEvaluation } from "../interfaces/user-dashboard.interface"
+
+@Injectable({
+  providedIn: "root",
+})
+export class RentalService {
+  // Datos de ejemplo expandidos
+  private mockRentals: Rental[] = [
+    {
+      id: "1",
+      propertyId: "1",
+      property: {
+          id: "1",
+          title: "Apartamento Moderno",
+          description: "Apartamento en excelente ubicación",
+          address: "Av. Circunvalar, Ocaña",
+          city: "Ocaña",
+          price: 1500000,
+          type: "RENT",
+          propertyType: "APARTMENT",
+          status: "RENTED",
+          bedrooms: 2,
+          bathrooms: 2,
+          area: 85,
+          images: ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop"],
+          amenities: ["Gimnasio", "Piscina", "Parqueadero"],
+          createdAt: new Date("2024-01-01"),
+          updatedAt: new Date("2024-01-01"),
+          ownerId: "landlord1",
+          isApproved: false,
+          listingDate: new Date()
+      },
+      tenantId: "user1",
+      landlordId: "landlord1",
+      monthlyRent: 1500000,
+      securityDeposit: 1500000,
+      startDate: new Date("2025-02-01"),
+      endDate: new Date("2025-12-01"),
+      status: "ACTIVE",
+      contractDate: new Date("2023-12-20"),
+      documents: [],
+      specialConditions: ["No mascotas", "No fumar"],
+    },
+    {
+      id: "2",
+      propertyId: "2",
+      property: {
+          id: "2",
+          title: "Casa Familiar",
+          description: "Casa con jardín y garaje",
+          address: "Barrio Colsure, Ocaña",
+          city: "Ocaña",
+          price: 2000000,
+          type: "RENT",
+          propertyType: "HOUSE",
+          status: "RENTED",
+          bedrooms: 3,
+          bathrooms: 2,
+          area: 120,
+          images: ["https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=300&fit=crop"],
+          amenities: ["Jardín", "Garaje", "Terraza"],
+          createdAt: new Date("2023-06-01"),
+          updatedAt: new Date("2023-06-01"),
+          ownerId: "landlord2",
+          isApproved: false,
+          listingDate: new Date()
+      },
+      tenantId: "user1",
+      landlordId: "landlord2",
+      monthlyRent: 2000000,
+      securityDeposit: 2000000,
+      startDate: new Date("2023-06-01"),
+      endDate: new Date("2025-02-10"),
+      status: "EXPIRED",
+      contractDate: new Date("2023-05-20"),
+      terminationDate: new Date("2025-12-10"),
+      documents: [],
+    },
+    {
+      id: "3",
+      propertyId: "3",
+      property: {
+          id: "3",
+          title: "Estudio Céntrico",
+          description: "Estudio moderno en el centro de la ciudad",
+          address: "Calle 10 #5-25, Centro, Ocaña",
+          city: "Ocaña",
+          price: 800000,
+          type: "RENT",
+          propertyType: "APARTMENT",
+          status: "RENTED",
+          bedrooms: 1,
+          bathrooms: 1,
+          area: 45,
+          images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop"],
+          amenities: ["WiFi", "Cocina equipada", "Seguridad 24h"],
+          createdAt: new Date("2024-03-15"),
+          updatedAt: new Date("2024-03-15"),
+          ownerId: "landlord3",
+          isApproved: true,
+          listingDate: new Date("2024-03-10")
+      },
+      tenantId: "user2",
+      landlordId: "landlord3",
+      monthlyRent: 800000,
+      securityDeposit: 800000,
+      startDate: new Date("2024-04-01"),
+      endDate: new Date("2025-04-01"),
+      status: "ACTIVE",
+      contractDate: new Date("2024-03-25"),
+      documents: [],
+      specialConditions: ["Máximo 1 persona", "No fiestas"],
+    },
+    {
+      id: "4",
+      propertyId: "4",
+      property: {
+          id: "4",
+          title: "Penthouse de Lujo",
+          description: "Espectacular penthouse con vista panorámica",
+          address: "Torre Mirador, Piso 15, Ocaña",
+          city: "Ocaña",
+          price: 3500000,
+          type: "RENT",
+          propertyType: "APARTMENT",
+          status: "RENTED",
+          bedrooms: 4,
+          bathrooms: 3,
+          area: 180,
+          images: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop"],
+          amenities: ["Jacuzzi", "Terraza privada", "Gimnasio", "Ascensor", "Parqueadero doble"],
+          createdAt: new Date("2024-02-01"),
+          updatedAt: new Date("2024-02-01"),
+          ownerId: "landlord4",
+          isApproved: true,
+          listingDate: new Date("2024-01-25")
+      },
+      tenantId: "user3",
+      landlordId: "landlord4",
+      monthlyRent: 3500000,
+      securityDeposit: 7000000,
+      startDate: new Date("2024-03-01"),
+      endDate: new Date("2025-03-01"),
+      status: "ACTIVE",
+      contractDate: new Date("2024-02-20"),
+      documents: [],
+      specialConditions: ["Depósito adicional por amenities"],
+    },
+    {
+      id: "5",
+      propertyId: "5",
+      property: {
+          id: "5",
+          title: "Casa Campestre",
+          description: "Casa en las afueras con amplio terreno",
+          address: "Vereda El Olivo, Km 5 vía Abrego",
+          city: "Ocaña",
+          price: 1200000,
+          type: "RENT",
+          propertyType: "HOUSE",
+          status: "RENTED",
+          bedrooms: 3,
+          bathrooms: 2,
+          area: 150,
+          images: ["https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=400&h=300&fit=crop"],
+          amenities: ["Jardín amplio", "BBQ", "Pozo de agua", "Huerta"],
+          createdAt: new Date("2024-01-10"),
+          updatedAt: new Date("2024-01-10"),
+          ownerId: "landlord5",
+          isApproved: true,
+          listingDate: new Date("2024-01-05")
+      },
+      tenantId: "user4",
+      landlordId: "landlord5",
+      monthlyRent: 1200000,
+      securityDeposit: 1200000,
+      startDate: new Date("2024-02-15"),
+      endDate: new Date("2025-02-15"),
+      status: "ACTIVE",
+      contractDate: new Date("2024-02-05"),
+      documents: [],
+      specialConditions: ["Responsabilidad por mantenimiento del jardín"],
+    },
+    {
+      id: "6",
+      propertyId: "6",
+      property: {
+          id: "6",
+          title: "Loft Industrial",
+          description: "Loft estilo industrial en zona comercial",
+          address: "Carrera 8 #12-40, Zona Rosa",
+          city: "Ocaña",
+          price: 1800000,
+          type: "RENT",
+          propertyType: "APARTMENT",
+          status: "RENTED",
+          bedrooms: 2,
+          bathrooms: 1,
+          area: 90,
+          images: ["https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop"],
+          amenities: ["Techos altos", "Ventanales", "Parqueadero", "Zona comercial"],
+          createdAt: new Date("2023-12-01"),
+          updatedAt: new Date("2023-12-01"),
+          ownerId: "landlord6",
+          isApproved: true,
+          listingDate: new Date("2023-11-25")
+      },
+      tenantId: "user5",
+      landlordId: "landlord6",
+      monthlyRent: 1800000,
+      securityDeposit: 1800000,
+      startDate: new Date("2024-01-01"),
+      endDate: new Date("2024-12-31"),
+      status: "EXPIRED",
+      contractDate: new Date("2023-12-15"),
+      terminationDate: new Date("2024-12-31"),
+      documents: [],
+      specialConditions: ["Uso mixto permitido (residencial/oficina)"],
+    },
+    {
+      id: "7",
+      propertyId: "7",
+      property: {
+          id: "7",
+          title: "Apartamento Familiar",
+          description: "Cómodo apartamento para familias",
+          address: "Conjunto Residencial Los Pinos, Torre B",
+          city: "Ocaña",
+          price: 1300000,
+          type: "RENT",
+          propertyType: "APARTMENT",
+          status: "RENTED",
+          bedrooms: 3,
+          bathrooms: 2,
+          area: 95,
+          images: ["https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop"],
+          amenities: ["Parque infantil", "Salón comunal", "Portería", "Parqueadero visitantes"],
+          createdAt: new Date("2024-05-01"),
+          updatedAt: new Date("2024-05-01"),
+          ownerId: "landlord7",
+          isApproved: true,
+          listingDate: new Date("2024-04-25")
+      },
+      tenantId: "user6",
+      landlordId: "landlord7",
+      monthlyRent: 1300000,
+      securityDeposit: 1300000,
+      startDate: new Date("2024-06-01"),
+      endDate: new Date("2025-06-01"),
+      status: "ACTIVE",
+      contractDate: new Date("2024-05-20"),
+      documents: [],
+      specialConditions: ["Niños bienvenidos"],
+    },
+    {
+      id: "8",
+      propertyId: "8",
+      property: {
+          id: "8",
+          title: "Casa de Dos Pisos",
+          description: "Amplia casa de dos plantas con patio",
+          address: "Barrio San Martín, Calle 15 #8-30",
+          city: "Ocaña",
+          price: 2200000,
+          type: "RENT",
+          propertyType: "HOUSE",
+          status: "RENTED",
+          bedrooms: 4,
+          bathrooms: 3,
+          area: 140,
+          images: ["https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop"],
+          amenities: ["Patio trasero", "Cuarto de estudio", "Garaje doble", "Lavandería"],
+          createdAt: new Date("2023-11-15"),
+          updatedAt: new Date("2023-11-15"),
+          ownerId: "landlord8",
+          isApproved: true,
+          listingDate: new Date("2023-11-10")
+      },
+      tenantId: "user7",
+      landlordId: "landlord8",
+      monthlyRent: 2200000,
+      securityDeposit: 2200000,
+      startDate: new Date("2023-12-01"),
+      endDate: new Date("2024-12-01"),
+      status: "PENDING",
+      contractDate: new Date("2023-11-25"),
+      documents: [],
+      specialConditions: ["Mantenimiento del jardín incluido"],
+    },
+    {
+      id: "9",
+      propertyId: "9",
+      property: {
+          id: "9",
+          title: "Duplex Moderno",
+          description: "Duplex con diseño contemporáneo",
+          address: "Urbanización El Nogal, Casa 45",
+          city: "Ocaña",
+          price: 2800000,
+          type: "RENT",
+          propertyType: "HOUSE",
+          status: "RENTED",
+          bedrooms: 3,
+          bathrooms: 2,
+          area: 125,
+          images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop"],
+          amenities: ["Terraza en segundo piso", "Cocina americana", "Closets empotrados", "Patio interno"],
+          createdAt: new Date("2024-04-01"),
+          updatedAt: new Date("2024-04-01"),
+          ownerId: "landlord9",
+          isApproved: true,
+          listingDate: new Date("2024-03-25")
+      },
+      tenantId: "user8",
+      landlordId: "landlord9",
+      monthlyRent: 2800000,
+      securityDeposit: 2800000,
+      startDate: new Date("2024-05-01"),
+      endDate: new Date("2025-05-01"),
+      status: "ACTIVE",
+      contractDate: new Date("2024-04-20"),
+      documents: [],
+      specialConditions: ["Cuidado especial de acabados"],
+    },
+    {
+      id: "10",
+      propertyId: "10",
+      property: {
+          id: "10",
+          title: "Apartamento Estudiantil",
+          description: "Perfecto para estudiantes, cerca de universidades",
+          address: "Calle 4 #12-15, Barrio Universidad",
+          city: "Ocaña",
+          price: 600000,
+          type: "RENT",
+          propertyType: "APARTMENT",
+          status: "RENTED",
+          bedrooms: 1,
+          bathrooms: 1,
+          area: 40,
+          images: ["https://images.adsttc.com/media/images/55f1/90fc/99e9/bae7/fe00/006b/newsletter/1346344730-1254839584-0909-om-ocana-de-espana-008-333x500.jpg?1441894647"],
+          amenities: ["WiFi incluido", "Amoblado", "Cocina básica", "Lavandería comunal"],
+          createdAt: new Date("2024-01-20"),
+          updatedAt: new Date("2024-01-20"),
+          ownerId: "landlord10",
+          isApproved: true,
+          listingDate: new Date("2024-01-15")
+      },
+      tenantId: "user9",
+      landlordId: "landlord10",
+      monthlyRent: 600000,
+      securityDeposit: 600000,
+      startDate: new Date("2024-02-01"),
+      endDate: new Date("2024-11-30"),
+      status: "ACTIVE",
+      contractDate: new Date("2024-01-25"),
+      documents: [],
+      specialConditions: ["Contrato por período académico", "Servicios incluidos"],
+    }
+  ]
+
+  private mockMaintenanceRequests: MaintenanceRequest[] = [
+    {
+      id: "1",
+      rentalId: "1",
+      title: "Fuga en la cocina",
+      description: "Hay una pequeña fuga en el grifo de la cocina que necesita reparación",
+      priority: "MEDIUM",
+      status: "IN_PROGRESS",
+      requestDate: new Date("2024-01-20"),
+      images: [],
+    },
+    {
+      id: "2",
+      rentalId: "1",
+      title: "Bombillo fundido",
+      description: "El bombillo del baño principal se fundió",
+      priority: "LOW",
+      status: "COMPLETED",
+      requestDate: new Date("2024-01-15"),
+      completionDate: new Date("2024-01-16"),
+      cost: 25000,
+    },
+    {
+      id: "3",
+      rentalId: "3",
+      title: "Problema con el aire acondicionado",
+      description: "El aire acondicionado no enfría correctamente",
+      priority: "HIGH",
+      status: "PENDING",
+      requestDate: new Date("2024-06-01"),
+      images: [],
+    },
+    {
+      id: "4",
+      rentalId: "4",
+      title: "Mantenimiento del jacuzzi",
+      description: "El jacuzzi necesita limpieza y mantenimiento rutinario",
+      priority: "MEDIUM",
+      status: "IN_PROGRESS",
+      requestDate: new Date("2024-05-15"),
+      images: [],
+    },
+    {
+      id: "5",
+      rentalId: "7",
+      title: "Cerradura dañada",
+      description: "La cerradura de la puerta principal está presentando fallas",
+      priority: "HIGH",
+      status: "COMPLETED",
+      requestDate: new Date("2024-05-20"),
+      completionDate: new Date("2024-05-22"),
+      cost: 150000,
+    },
+  ]
+
+  getUserRentals(userId: string): Observable<Rental[]> {
+    return of(this.mockRentals).pipe(delay(500))
+  }
+
+  getRentalDetails(rentalId: string): Observable<Rental> {
+    const rental = this.mockRentals.find((r) => r.id === rentalId)
+    if (rental) {
+      return of(rental).pipe(delay(300))
+    }
+    throw new Error("Arriendo no encontrado")
+  }
+
+  submitMaintenanceRequest(request: MaintenanceRequest): Observable<MaintenanceRequest> {
+    const newRequest = {
+      ...request,
+      id: Date.now().toString(),
+      requestDate: new Date(),
+      status: "PENDING" as const,
+    }
+    this.mockMaintenanceRequests.push(newRequest)
+    return of(newRequest).pipe(delay(1000))
+  }
+
+  getMaintenanceRequests(rentalId: string): Observable<MaintenanceRequest[]> {
+    const requests = this.mockMaintenanceRequests.filter((r) => r.rentalId === rentalId)
+    return of(requests).pipe(delay(300))
+  }
+
+  renewRental(rentalId: string): Observable<Rental> {
+    const rental = this.mockRentals.find((r) => r.id === rentalId)
+    if (rental) {
+      rental.status = "RENEWED"
+      rental.renewalDate = new Date()
+      rental.endDate = new Date(rental.endDate.getTime() + 365 * 24 * 60 * 60 * 1000) // +1 año
+      return of(rental).pipe(delay(1000))
+    }
+    throw new Error("Arriendo no encontrado")
+  }
+
+  evaluateRental(rentalId: string, evaluation: RentalEvaluation): Observable<boolean> {
+    // Simular envío de evaluación
+    console.log("Evaluación enviada:", evaluation)
+    return of(true).pipe(delay(1000))
+  }
+}

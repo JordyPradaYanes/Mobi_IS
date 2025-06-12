@@ -1,0 +1,447 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Mis Compras</h1>
+          <p class="text-gray-600">Historial y seguimiento de tus compras inmobiliarias</p>
+        </div>
+      </div>
+
+      <!-- Resumen de transacciones -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+          <div class="flex items-center">
+            <div class="p-3 bg-blue-100 rounded-lg">
+              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-blue-800">Total Compras</p>
+              <p class="text-2xl font-bold text-blue-900">{{ transactionSummary.totalPurchases }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+          <div class="flex items-center">
+            <div class="p-3 bg-green-100 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-green-800">Completadas</p>
+              <p class="text-2xl font-bold text-green-900">{{ transactionSummary.completedPurchases }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+          <div class="flex items-center">
+            <div class="p-3 bg-purple-100 rounded-lg">
+              <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-purple-800">Total Invertido</p>
+              <p class="text-xl font-bold text-purple-900">{{ formatPrice(transactionSummary.totalSpent) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
+          <div class="flex items-center">
+            <div class="p-3 bg-yellow-100 rounded-lg">
+              <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-yellow-800">En Proceso</p>
+              <p class="text-2xl font-bold text-yellow-900">{{ getInProcessCount() }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Filtros -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+          <input
+            type="text"
+            [(ngModel)]="filters.search"
+            (ngModelChange)="onFilterChange()"
+            placeholder="Propiedad, dirección..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+          <select
+            [(ngModel)]="filters.status"
+            (ngModelChange)="onFilterChange()"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Todos</option>
+            <option value="PENDING">Pendiente</option>
+            <option value="IN_PROCESS">En Proceso</option>
+            <option value="COMPLETED">Completada</option>
+            <option value="CANCELLED">Cancelada</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Rango de Fechas</label>
+          <select
+            [(ngModel)]="filters.dateRange"
+            (ngModelChange)="onFilterChange()"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Todas</option>
+            <option value="last-month">Último mes</option>
+            <option value="last-3-months">Últimos 3 meses</option>
+            <option value="last-year">Último año</option>
+          </select>
+        </div>
+
+        <div class="flex items-end">
+          <button
+            (click)="clearFilters()"
+            type="button"
+            class="w-full px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      <p class="mt-2 text-gray-600">Cargando compras...</p>
+    </div>
+
+    <!-- Lista de compras -->
+    <div *ngIf="!isLoading" class="space-y-6">
+      <div
+        *ngFor="let purchase of filteredPurchases"
+        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+      >
+        <div class="p-6">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+            
+            <!-- Información de la propiedad -->
+            <div class="flex-1">
+              <div class="flex items-start space-x-4">
+                <img
+                  [src]="purchase.property.images[0]"
+                  [alt]="purchase.property.title"
+                  class="h-24 w-24 rounded-lg object-cover flex-shrink-0"
+                />
+                
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center space-x-3 mb-2">
+                    <h3 class="text-lg font-semibold text-gray-900 truncate">{{ purchase.property.title }}</h3>
+                    <span [ngClass]="getStatusBadgeClass(purchase.status)">
+                      {{ getStatusText(purchase.status) }}
+                    </span>
+                  </div>
+                  
+                  <p class="text-sm text-gray-600 mb-2">{{ purchase.property.address }}</p>
+                  <p class="text-sm text-gray-500 mb-2">{{ getStatusDescription(purchase.status) }}</p>
+                  
+                  <div class="flex items-center text-sm text-gray-500">
+                    <span>Fecha de compra: {{ formatDate(purchase.purchaseDate) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Información financiera -->
+            <div class="mt-4 lg:mt-0 lg:ml-6 flex-shrink-0">
+              <div class="text-right">
+                <div class="text-2xl font-bold text-indigo-600 mb-1">
+                  {{ formatPrice(purchase.purchasePrice) }}
+                </div>
+                
+                <div class="text-sm text-gray-600 mb-2">
+                  Pagado: {{ formatPrice(purchase.totalPaid) }}
+                </div>
+                
+                <div *ngIf="purchase.remainingAmount > 0" class="text-sm text-gray-600 mb-3">
+                  Pendiente: {{ formatPrice(purchase.remainingAmount) }}
+                </div>
+
+                <!-- Barra de progreso -->
+                <div *ngIf="purchase.status === 'IN_PROCESS'" class="w-32 bg-gray-200 rounded-full h-2 mb-3">
+                  <div
+                    [style.width.%]="getProgressPercentage(purchase)"
+                    class="bg-indigo-600 h-2 rounded-full transition-all"
+                  ></div>
+                </div>
+                <div *ngIf="purchase.status === 'IN_PROCESS'" class="text-xs text-gray-500 mb-3">
+                  {{ getProgressPercentage(purchase) }}% completado
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="flex space-x-2">
+                  <button
+                    (click)="viewPurchaseTimeline(purchase)"
+                    type="button"
+                    class="px-3 py-2 bg-blue-100 text-blue-700 rounded-md text-sm font-medium hover:bg-blue-200 transition-colors"
+                  >
+                    Ver Timeline
+                  </button>
+                  
+                  <button
+                    *ngIf="purchase.status === 'IN_PROCESS'"
+                    (click)="openPaymentModal(purchase)"
+                    type="button"
+                    class="px-3 py-2 bg-green-100 text-green-700 rounded-md text-sm font-medium hover:bg-green-200 transition-colors"
+                  >
+                    Pagar Cuota
+                  </button>
+                  
+                  <button
+                    (click)="downloadDocument('contract-' + purchase.id)"
+                    type="button"
+                    class="px-3 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors"
+                  >
+                    Documentos
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && filteredPurchases.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No hay compras</h3>
+      <p class="mt-1 text-sm text-gray-500">
+        <span *ngIf="hasActiveFilters()">No se encontraron compras con los filtros aplicados.</span>
+        <span *ngIf="!hasActiveFilters()">Aún no has realizado ninguna compra.</span>
+      </p>
+      <div class="mt-6">
+        <button
+          (click)="navigateToProperties()"
+          type="button"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+        >
+          Explorar Propiedades
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Timeline -->
+<div *ngIf="showTimelineModal && selectedPurchase" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          Timeline de Compra: {{ selectedPurchase.property.title }}
+        </h3>
+        <button
+          (click)="closeTimelineModal()"
+          type="button"
+          class="text-gray-400 hover:text-gray-600"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Timeline visual -->
+      <div class="flow-root">
+        <ul class="-mb-8">
+          <li *ngFor="let step of getTimelineSteps(selectedPurchase); let isLast = last">
+            <div class="relative" [ngClass]="{ 'pb-8': !isLast }">
+              <div *ngIf="!isLast" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"></div>
+              <div class="relative flex space-x-3">
+                <div>
+                  <span
+                    [ngClass]="getTimelineStepClass(step)"
+                    class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
+                  >
+                    <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        *ngIf="step.completed"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                      <path
+                        *ngIf="!step.completed && step.status === 'in-progress'"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                      <path
+                        *ngIf="!step.completed && step.status !== 'in-progress'"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                  <div>
+                    <p class="text-sm text-gray-900 font-medium">{{ step.title }}</p>
+                    <p class="text-sm text-gray-500">{{ step.description }}</p>
+                  </div>
+                  <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                    {{ formatDate(step.date) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Cronograma de pagos -->
+      <div *ngIf="paymentSchedule.length > 0" class="mt-8">
+        <h4 class="text-md font-medium text-gray-900 mb-4">Cronograma de Pagos</h4>
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cuota</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Límite</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let payment of paymentSchedule">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  Cuota {{ payment.installmentNumber }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {{ formatPrice(payment.amount) }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{ formatDate(payment.dueDate) }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span [ngClass]="getPaymentStatusClass(payment.status)">
+                    {{ getPaymentStatusText(payment.status) }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="mt-6 flex justify-end">
+        <button
+          (click)="closeTimelineModal()"
+          type="button"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Pago -->
+<div *ngIf="showPaymentModal && selectedPurchase" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          Realizar Pago - {{ selectedPurchase.property.title }}
+        </h3>
+        <button
+          (click)="closePaymentModal()"
+          type="button"
+          class="text-gray-400 hover:text-gray-600"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-medium text-gray-700">Monto pendiente:</span>
+            <span class="text-lg font-bold text-red-600">{{ formatPrice(selectedPurchase.remainingAmount) }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-700">Progreso:</span>
+            <span class="text-sm text-gray-600">{{ getProgressPercentage(selectedPurchase) }}% completado</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Monto a pagar</label>
+          <input
+            type="number"
+            [(ngModel)]="paymentAmount"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Ingrese el monto"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Método de pago</label>
+          <select 
+            [(ngModel)]="paymentMethod"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Seleccionar método</option>
+            <option value="transfer">Transferencia bancaria</option>
+            <option value="card">Tarjeta de crédito</option>
+            <option value="pse">PSE</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="flex justify-end space-x-3 mt-6">
+        <button
+          (click)="closePaymentModal()"
+          type="button"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="processPayment()"
+          type="button"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+        >
+          Procesar Pago
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

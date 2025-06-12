@@ -1,40 +1,45 @@
 <!-- Dashboard Container -->
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-  
+<div class="min-h-screen" [ngStyle]="{ 'background-color': colors.backgroundColor }">
   <!-- Navigation Header -->
-  <nav class="bg-white shadow-sm border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <nav class="bg-white shadow-lg border-b" [ngStyle]="{ 'border-color': colors.borderColor }">
+    <div class="container mx-auto px-4">
       <div class="flex justify-between items-center h-16">
-        
         <!-- Logo y Título -->
         <div class="flex items-center space-x-4">
-          <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
               </svg>
             </div>
-            <span class="text-lg font-bold text-gray-900">Mobi</span>
+            <div>
+              <span class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">Mobi</span>
+              <p class="text-xs" [ngStyle]="{ color: colors.textLight }">Dashboard</p>
+            </div>
           </div>
         </div>
 
         <!-- User Menu -->
         <div class="flex items-center space-x-4">
-          <div class="flex items-center space-x-3">
-            <img 
-              [src]="userInfo.avatar" 
-              [alt]="userInfo.name"
-              class="w-8 h-8 rounded-full"
-            >
+          <!-- Notifications -->
+          <button class="relative p-2" [ngStyle]="{ color: colors.textLight }">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.07 2.132a3.995 3.995 0 017.86 0 7.5 7.5 0 01-7.86 0z"/>
+            </svg>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          <!-- User Profile -->
+          <div class="flex items-center space-x-3 bg-white rounded-lg p-2 shadow-sm" [ngStyle]="{ 'border-color': colors.borderColor }">
+            <img [src]="userInfo.avatar" [alt]="userInfo.name" class="w-8 h-8 rounded-full object-cover"/>
             <div class="hidden md:block">
-              <div class="text-sm font-medium text-gray-900">{{ userInfo.name }}</div>
-              <div class="text-xs text-gray-500">{{ userInfo.email }}</div>
+              <div class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">{{ userInfo.name }}</div>
+              <div class="text-xs" [ngStyle]="{ color: colors.textLight }">{{ userInfo.email }}</div>
             </div>
           </div>
-          <button 
-            (click)="logout()"
-            class="ml-3 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-          >
+
+          <!-- Logout Button -->
+          <button (click)="logout()" class="px-4 py-2 rounded text-sm font-medium text-white" [ngStyle]="{ 'background-color': colors.primary }">
             Cerrar Sesión
           </button>
         </div>
@@ -43,323 +48,707 @@
   </nav>
 
   <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
+  <div class="container mx-auto px-4 py-8">
     <!-- Welcome Section -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2 text-gray-900">Bienvenido, {{ userInfo.name }}</h1>
-      <p class="text-gray-600">Gestiona tus propiedades y revisa el rendimiento de tu negocio inmobiliario.</p>
-    </div>
+    <section class="rounded mb-8" [ngStyle]="{ 'background-color': colors.backgroundColor }">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <!-- Contenido de texto - lado izquierdo -->
+        <div class="md:col-span-8">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4" [ngStyle]="{ color: colors.textDark }">
+            ¡Bienvenido de vuelta,<br />{{ userInfo.name }}!
+          </h1>
+          
+          <p class="text-lg mb-8" [ngStyle]="{ color: colors.textLight }">
+            Gestiona tu portafolio inmobiliario y revisa el rendimiento de tu negocio.
+          </p>
+
+          <!-- Quick Stats -->
+          <div class="flex flex-wrap gap-10">
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3 bg-indigo-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg" [ngStyle]="{ color: colors.textDark }">
+                  {{ stats.totalProperties }} Propiedades
+                </h4>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">
+                  En tu portafolio
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3 bg-blue-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg" [ngStyle]="{ color: colors.textDark }">
+                  {{ formatPrice(stats.monthlyRevenue) }}
+                </h4>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">
+                  Ingresos mensuales
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagen - lado derecho -->
+        <div class="md:col-span-4 hidden md:block">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-bold text-lg mb-4" [ngStyle]="{ color: colors.textDark }">Resumen Rápido</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span [ngStyle]="{ color: colors.textLight }">Ocupación:</span>
+                <span class="font-medium" [ngStyle]="{ color: colors.textDark }">{{ getOccupancyRate() }}%</span>
+              </div>
+              <div class="flex justify-between">
+                <span [ngStyle]="{ color: colors.textLight }">Disponibles:</span>
+                <span class="font-medium" [ngStyle]="{ color: colors.textDark }">{{ stats.availableProperties }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span [ngStyle]="{ color: colors.textLight }">Arrendadas:</span>
+                <span class="font-medium" [ngStyle]="{ color: colors.textDark }">{{ stats.rentedProperties }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Navigation Tabs -->
     <div class="mb-8">
-      <nav class="flex space-x-8" aria-label="Tabs">
+      <div class="flex border-b" [ngStyle]="{ 'border-color': colors.borderColor }">
         <button
-          (click)="setActiveTab('overview')"
-          [class]="getTabClass('overview')"
+          *ngFor="let tab of getAvailableTabs()"
+          (click)="setActiveTab(tab)"
+          class="px-6 py-3 text-sm font-medium transition-colors"
+          [ngClass]="{
+            'border-b-2 border-indigo-500 text-indigo-600': activeTab === tab,
+            'hover:text-gray-700': activeTab !== tab
+          }"
+          [ngStyle]="{ color: activeTab !== tab ? colors.textLight : '' }"
         >
-          Resumen
+          {{ getTabText(tab) }}
         </button>
-        <button
-          (click)="setActiveTab('properties')"
-          [class]="getTabClass('properties')"
-        >
-          Propiedades
-        </button>
-        <button
-          (click)="setActiveTab('add-property')"
-          [class]="getTabClass('add-property')"
-        >
-          {{ isEditMode ? 'Editar Propiedad' : 'Agregar Propiedad' }}
-        </button>
-        <button
-          (click)="setActiveTab('analytics')"
-          [class]="getTabClass('analytics')"
-        >
-          Análisis
-        </button>
-        <button
-          (click)="setActiveTab('settings')"
-          [class]="getTabClass('settings')"
-        >
-          Configuración
-        </button>
-      </nav>
+      </div>
     </div>
 
     <!-- Overview Tab Content -->
     <div *ngIf="activeTab === 'overview'">
-      
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        
         <!-- Total Properties -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <div class="flex items-center">
-            <div class="p-2 rounded-lg bg-blue-50">
-              <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-sm font-medium text-gray-500">Total Propiedades</h3>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.totalProperties }}</p>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-sm font-medium mb-1" [ngStyle]="{ color: colors.textLight }">Total Propiedades</h3>
+              <p class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ stats.totalProperties }}</p>
+              <div class="flex items-center mt-2">
+                <svg class="h-4 w-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
+                </svg>
+                <span class="text-sm text-green-600">+2 este mes</span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Available Properties -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <div class="flex items-center">
-            <div class="p-2 rounded-lg bg-green-50">
-              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-sm font-medium text-gray-500">Disponibles</h3>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.availableProperties }}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rented Properties -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <div class="flex items-center">
-            <div class="p-2 rounded-lg bg-indigo-50">
-              <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
-              </svg>
-            </div>
-            <div class="ml-4">
-              <h3 class="text-sm font-medium text-gray-500">Alquiladas</h3>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.rentedProperties }}</p>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                  <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-sm font-medium mb-1" [ngStyle]="{ color: colors.textLight }">Disponibles</h3>
+              <p class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ stats.availableProperties }}</p>
+              <span class="text-sm" [ngStyle]="{ color: colors.textLight }">{{ getOccupancyRate() }}% ocupación</span>
             </div>
           </div>
         </div>
 
         <!-- Monthly Revenue -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <div class="flex items-center">
-            <div class="p-2 rounded-lg bg-yellow-50">
-              <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-              </svg>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <svg class="h-5 w-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-sm font-medium mb-1" [ngStyle]="{ color: colors.textLight }">Ingresos Mensuales</h3>
+              <p class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ formatPrice(stats.monthlyRevenue) }}</p>
+              <div class="flex items-center mt-2">
+                <svg class="h-4 w-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <span class="text-sm text-green-600">+12% vs anterior</span>
+              </div>
             </div>
-            <div class="ml-4">
-              <h3 class="text-sm font-medium text-gray-500">Ingresos Mensuales</h3>
-              <p class="text-2xl font-semibold text-gray-900">{{ formatPrice(stats.monthlyRevenue) }}</p>
+          </div>
+        </div>
+
+        <!-- Net Income -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <svg class="h-5 w-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-sm font-medium mb-1" [ngStyle]="{ color: colors.textLight }">Ganancia Neta</h3>
+              <p class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ formatPrice(personalStats.netIncome) }}</p>
+              <span class="text-sm" [ngStyle]="{ color: colors.textLight }">Ingresos - Gastos</span>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <button (click)="setActiveTab('my-properties')" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left border" [ngStyle]="{ 'border-color': colors.borderColor }">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <svg class="h-6 w-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold" [ngStyle]="{ color: colors.textDark }">Mis Propiedades</h3>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Gestionar portafolio</p>
+            </div>
+          </div>
+        </button>
+
+        <button (click)="setActiveTab('my-purchases')" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left border" [ngStyle]="{ 'border-color': colors.borderColor }">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+              <svg class="h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold" [ngStyle]="{ color: colors.textDark }">Mis Compras</h3>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">{{ personalStats.totalPurchases }} transacciones</p>
+            </div>
+          </div>
+        </button>
+
+        <button (click)="setActiveTab('my-rentals')" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left border" [ngStyle]="{ 'border-color': colors.borderColor }">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold" [ngStyle]="{ color: colors.textDark }">Mis Arriendos</h3>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">{{ personalStats.activeRentals }} activos</p>
+            </div>
+          </div>
+        </button>
+
+        <button (click)="setActiveTab('my-bills')" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left border" [ngStyle]="{ 'border-color': colors.borderColor }">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <svg class="h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold" [ngStyle]="{ color: colors.textDark }">Facturación</h3>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">{{ personalStats.pendingBills }} pendientes</p>
+            </div>
+          </div>
+        </button>
+      </div>
+
       <!-- Recent Properties -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div class="px-6 py-4 border-b border-gray-200">
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b" [ngStyle]="{ 'border-color': colors.borderColor }">
           <div class="flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-gray-900">Propiedades Recientes</h2>
-            <button 
-              (click)="addNewProperty()"
-              class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
-            >
+            <div>
+              <h2 class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">Propiedades Recientes</h2>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Últimas propiedades agregadas a tu portafolio</p>
+            </div>
+            <button (click)="addNewProperty()" class="px-4 py-2 rounded text-sm font-medium text-white" [ngStyle]="{ 'background-color': colors.primary }">
               Agregar Propiedad
             </button>
           </div>
         </div>
-        
+
         <div class="p-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div 
-              *ngFor="let property of recentProperties" 
-              class="bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
-            >
-              <img 
-                [src]="property.images[0]" 
-                [alt]="property.title"
-                class="w-full h-48 object-cover"
-                (click)="viewPropertyDetails(property.id)"
-              >
-              <div class="p-4">
-                <div class="flex justify-between items-start mb-2">
-                  <h3 class="text-lg font-semibold truncate text-gray-900">{{ property.title }}</h3>
-                  <span 
-                    [class]="getStatusBadgeClass(property.status)"
-                  >
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="recentProperties.length > 0">
+            <div *ngFor="let property of recentProperties" class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow" [ngStyle]="{ 'border-color': colors.borderColor }">
+              <div class="relative">
+                <img [src]="property.images[0]" [alt]="property.title" class="w-full h-48 object-cover" (click)="viewPropertyDetails(property.id)"/>
+                <div class="absolute top-4 right-4">
+                  <span [ngClass]="getStatusBadgeClass(property.status)" class="px-2 py-1 rounded text-xs font-medium">
                     {{ getStatusText(property.status) }}
                   </span>
                 </div>
+              </div>
+              
+              <div class="p-4">
+                <h3 class="font-bold text-lg mb-2" [ngStyle]="{ color: colors.textDark }">{{ property.title }}</h3>
                 
-                <p class="text-sm mb-2 text-gray-600">{{ property.address }}</p>
-                
-                <div class="flex justify-between items-center mb-3">
-                  <span class="text-2xl font-bold text-indigo-600">{{ formatPrice(property.price) }}</span>
-                  <span class="text-sm text-gray-500">{{ getTypeText(property.type) }}</span>
+                <div class="flex items-center space-x-1 mb-3">
+                  <svg class="h-4 w-4" [ngStyle]="{ color: colors.textLight }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  <p class="text-sm" [ngStyle]="{ color: colors.textLight }">{{ property.address }}</p>
                 </div>
-                
-                <div class="flex justify-between text-sm mb-4 text-gray-500">
-                  <span>{{ property.bedrooms }} hab.</span>
-                  <span>{{ property.bathrooms }} baños</span>
-                  <span>{{ property.area }} m²</span>
+
+                <div class="flex justify-between items-center mb-4">
+                  <span class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ formatPrice(property.price) }}</span>
+                  <span class="text-sm font-medium px-2 py-1 bg-gray-100 rounded" [ngStyle]="{ color: colors.textLight }">{{ getTypeText(property.type) }}</span>
                 </div>
-                
-                <div class="flex space-x-2">
-                  <button 
-                    (click)="viewPropertyDetails(property.id)"
-                    class="flex-1 px-3 py-2 bg-blue-100 text-blue-700 rounded-md text-sm font-medium hover:bg-blue-200 transition-colors"
-                  >
+
+                <div class="flex justify-between text-sm mb-4" [ngStyle]="{ color: colors.textLight }">
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    </svg>
+                    <span>{{ property.bedrooms }} hab.</span>
+                  </div>
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11"/>
+                    </svg>
+                    <span>{{ property.bathrooms }} baños</span>
+                  </div>
+                  <div class="flex items-center space-x-1">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                    </svg>
+                    <span>{{ property.area }} m²</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <button (click)="viewPropertyDetails(property.id)" class="px-3 py-2 text-xs font-medium border rounded hover:bg-gray-50" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textDark }">
                     Ver
                   </button>
-                  <button 
-                    (click)="editProperty(property.id)"
-                    class="flex-1 px-3 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300 transition-colors"
-                  >
+                  <button (click)="editProperty(property.id)" class="px-3 py-2 text-xs font-medium border rounded hover:bg-gray-50" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textDark }">
                     Editar
                   </button>
-                  <button 
-                    (click)="deleteProperty(property.id)"
-                    class="flex-1 px-3 py-2 bg-red-100 text-red-700 rounded-md text-sm font-medium hover:bg-red-200 transition-colors"
-                  >
+                  <button (click)="deleteProperty(property.id)" class="px-3 py-2 text-xs font-medium text-red-600 border border-red-200 rounded hover:bg-red-50">
                     Eliminar
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <!-- Empty state -->
           <div *ngIf="recentProperties.length === 0" class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg class="h-8 w-8" [ngStyle]="{ color: colors.textLight }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold mb-2" [ngStyle]="{ color: colors.textDark }">No hay propiedades</h3>
+            <p class="mb-6" [ngStyle]="{ color: colors.textLight }">Comienza agregando tu primera propiedad al portafolio.</p>
+            <button (click)="addNewProperty()" class="px-6 py-3 rounded font-medium text-white" [ngStyle]="{ 'background-color': colors.primary }">
+              Agregar Primera Propiedad
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Properties Tab Content -->
+    <div *ngIf="activeTab === 'properties'">
+      <app-property-list></app-property-list>
+    </div>
+
+    <!-- Add/Edit Property Tab Content -->
+    <div *ngIf="activeTab === 'add-property'">
+      <app-property-form [property]="editingProperty" [isEditMode]="isEditMode" (propertySaved)="onPropertySaved($event)" (formCancelled)="onPropertyFormCancel()"></app-property-form>
+    </div>
+
+    <!-- My Properties Tab Content -->
+    <div *ngIf="activeTab === 'my-properties'">
+      <app-user-properties></app-user-properties>
+    </div>
+
+    <!-- My Purchases Tab Content -->
+    <div *ngIf="activeTab === 'my-purchases'">
+      <app-user-purchases></app-user-purchases>
+    </div>
+
+    <!-- My Rentals Tab Content -->
+    <div *ngIf="activeTab === 'my-rentals'">
+      <app-user-rentals></app-user-rentals>
+    </div>
+
+    <!-- My Bills Tab Content -->
+    <div *ngIf="activeTab === 'my-bills'">
+      <app-monthly-bills></app-monthly-bills>
+    </div>
+
+    <!-- Analytics Tab Content -->
+    <div *ngIf="activeTab === 'analytics'" class="space-y-8">
+      <!-- Analytics Header -->
+      <div class="bg-white p-8 rounded-lg shadow-md">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <svg class="h-6 w-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">Análisis y Reportes</h2>
+              <p [ngStyle]="{ color: colors.textLight }">Insights detallados de tu portafolio inmobiliario</p>
+            </div>
+          </div>
+
+          <!-- Time Range Selector -->
+          <div class="flex border rounded-lg" [ngStyle]="{ 'border-color': colors.borderColor }">
+            <button class="px-4 py-2 text-sm font-medium bg-indigo-500 text-white rounded-l-lg">7D</button>
+            <button class="px-4 py-2 text-sm font-medium border-l" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textLight }">30D</button>
+            <button class="px-4 py-2 text-sm font-medium border-l" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textLight }">3M</button>
+            <button class="px-4 py-2 text-sm font-medium border-l rounded-r-lg" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textLight }">1A</button>
+          </div>
+        </div>
+
+        <!-- Quick Stats Row -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">ROI Total</p>
+                <p class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">24.5%</p>
+              </div>
+              <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg class="h-4 w-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Crecimiento</p>
+                <p class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">+12.3%</p>
+              </div>
+              <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="h-4 w-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Eficiencia</p>
+                <p class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">87%</p>
+              </div>
+              <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <svg class="h-4 w-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Score</p>
+                <p class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">9.2/10</p>
+              </div>
+              <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                <svg class="h-4 w-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Revenue Chart -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold" [ngStyle]="{ color: colors.textDark }">Ingresos por Mes</h3>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Tendencia de ingresos mensuales</p>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 rounded-lg p-8 text-center">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="h-8 w-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold mb-2" [ngStyle]="{ color: colors.textDark }">Gráfico Interactivo</h3>
+            <p class="mb-6" [ngStyle]="{ color: colors.textLight }">Visualización de tendencias mensuales</p>
+            <button class="px-4 py-2 rounded font-medium text-white" [ngStyle]="{ 'background-color': colors.primary }">
+              Ver Análisis Completo
+            </button>
+          </div>
+        </div>
+
+        <!-- Occupancy Chart -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <svg class="h-5 w-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold" [ngStyle]="{ color: colors.textDark }">Tasa de Ocupación</h3>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Eficiencia del portafolio</p>
+            </div>
+          </div>
+
+          <div class="text-center mb-6">
+            <div class="relative w-32 h-32 mx-auto">
+              <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                <circle cx="50" cy="50" r="40" stroke="#10b981" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="75.36" stroke-linecap="round"/>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ getOccupancyRate() }}%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center p-3 bg-green-50 rounded-lg">
+              <p class="text-xl font-bold text-green-600">{{ stats.rentedProperties }}</p>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Ocupadas</p>
+            </div>
+            <div class="text-center p-3 bg-gray-50 rounded-lg">
+              <p class="text-xl font-bold" [ngStyle]="{ color: colors.textDark }">{{ stats.availableProperties }}</p>
+              <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Disponibles</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Tab Content -->
+    <div *ngIf="activeTab === 'settings'" class="space-y-8">
+      <!-- Settings Header -->
+      <div class="bg-white p-8 rounded-lg shadow-md">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+            <svg class="h-6 w-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No hay propiedades</h3>
-            <p class="mt-1 text-sm text-gray-500">Comienza agregando tu primera propiedad.</p>
-            <div class="mt-6">
-              <button 
-                (click)="addNewProperty()"
-                class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
-              >
-                Agregar Propiedad
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold" [ngStyle]="{ color: colors.textDark }">Configuración</h2>
+            <p [ngStyle]="{ color: colors.textLight }">Personaliza tu experiencia y preferencias</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Profile Settings -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md">
+          <div class="p-6 border-b" [ngStyle]="{ 'border-color': colors.borderColor }">
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                <svg class="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold" [ngStyle]="{ color: colors.textDark }">Información del Perfil</h3>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">Actualiza tus datos personales</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <!-- Profile Picture Section -->
+            <div class="flex items-center space-x-6 mb-6">
+              <div class="relative">
+                <img [src]="userInfo.avatar" [alt]="userInfo.name" class="w-20 h-20 rounded-full object-cover border-2 border-gray-200"/>
+                <button class="absolute -bottom-1 -right-1 p-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600">
+                  <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                  </svg>
+                </button>
+              </div>
+              <div>
+                <h4 class="font-medium" [ngStyle]="{ color: colors.textDark }">{{ userInfo.name }}</h4>
+                <p class="text-sm" [ngStyle]="{ color: colors.textLight }">{{ userInfo.email }}</p>
+                <button class="text-sm text-indigo-600 hover:text-indigo-800">
+                  Cambiar foto de perfil
+                </button>
+              </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-1" [ngStyle]="{ color: colors.textDark }">Nombre Completo</label>
+                <input type="text" [value]="userInfo.name" class="w-full p-3 border rounded-lg" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textDark }"/>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium mb-1" [ngStyle]="{ color: colors.textDark }">Correo Electrónico</label>
+                <input type="email" [value]="userInfo.email" class="w-full p-3 border rounded-lg" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textDark }"/>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium mb-1" [ngStyle]="{ color: colors.textDark }">Teléfono</label>
+                <input type="tel" class="w-full p-3 border rounded-lg" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textDark }" placeholder="+57 300 123 4567"/>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium mb-1" [ngStyle]="{ color: colors.textDark }">Tipo de Usuario</label>
+                <select [(ngModel)]="userInfo.userType" class="w-full p-3 border rounded-lg" [ngStyle]="{ 'border-color': colors.borderColor, color: colors.textDark }">
+                  <option value="OWNER">Propietario</option>
+                  <option value="TENANT">Inquilino</option>
+                  <option value="BUYER">Comprador</option>
+                  <option value="ADMIN">Administrador</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Settings Sidebar -->
+        <div class="space-y-6">
+          <!-- Notifications -->
+          <div class="bg-white rounded-lg shadow-md">
+            <div class="p-4 border-b" [ngStyle]="{ 'border-color': colors.borderColor }">
+              <div class="flex items-center space-x-3">
+                <div class="w-6 h-6 bg-green-100 rounded flex items-center justify-center">
+                  <svg class="h-4 w-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5V2H9a2 2 0 00-2 2v12a2 2 0 002 2h6z"/>
+                  </svg>
+                </div>
+                <h3 class="font-bold" [ngStyle]="{ color: colors.textDark }">Notificaciones</h3>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">Email</h4>
+                  <p class="text-xs" [ngStyle]="{ color: colors.textLight }">Notificaciones por correo</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked/>
+                  <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">Push</h4>
+                  <p class="text-xs" [ngStyle]="{ color: colors.textLight }">Notificaciones móviles</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer"/>
+                  <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">Reportes</h4>
+                  <p class="text-xs" [ngStyle]="{ color: colors.textLight }">Resumen semanal</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked/>
+                  <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="bg-white rounded-lg shadow-md">
+            <div class="p-4 border-b" [ngStyle]="{ 'border-color': colors.borderColor }">
+              <h3 class="font-bold" [ngStyle]="{ color: colors.textDark }">Acciones Rápidas</h3>
+            </div>
+
+            <div class="p-4 space-y-2">
+              <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg border" [ngStyle]="{ 'border-color': colors.borderColor }">
+                <svg class="h-4 w-4" [ngStyle]="{ color: colors.textLight }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">Exportar Datos</span>
+              </button>
+
+              <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg border" [ngStyle]="{ 'border-color': colors.borderColor }">
+                <svg class="h-4 w-4" [ngStyle]="{ color: colors.textLight }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                </svg>
+                <span class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">Compartir Perfil</span>
+              </button>
+
+              <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg border" [ngStyle]="{ 'border-color': colors.borderColor }">
+                <svg class="h-4 w-4" [ngStyle]="{ color: colors.textLight }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span class="text-sm font-medium" [ngStyle]="{ color: colors.textDark }">Generar Reporte</span>
               </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Properties Tab Content - Usando el componente PropertyListComponent -->
-    <div *ngIf="activeTab === 'properties'">
-      <app-property-list></app-property-list>
-    </div>
-
-    <!-- Add/Edit Property Tab Content - Usando el componente PropertyFormComponent -->
-    <div *ngIf="activeTab === 'add-property'">
-      <app-property-form
-        [property]="editingProperty"
-        [isEditMode]="isEditMode"
-        (propertySaved)="onPropertySaved($event)"
-        (formCancelled)="onPropertyFormCancel()"
-      ></app-property-form>
-    </div>
-
-    <!-- Analytics Tab Content -->
-    <div *ngIf="activeTab === 'analytics'" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <h2 class="text-xl font-semibold mb-6 text-gray-900">Análisis y Reportes</h2>
-      
-      <!-- Analytics Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-lg text-white">
-          <h3 class="text-lg font-semibold mb-2">Ingresos Totales</h3>
-          <p class="text-3xl font-bold">{{ formatPrice(stats.totalRevenue) }}</p>
-          <p class="text-blue-100 text-sm mt-2">+12% desde el mes pasado</p>
-        </div>
-        
-        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-lg text-white">
-          <h3 class="text-lg font-semibold mb-2">Tasa de Ocupación</h3>
-          <p class="text-3xl font-bold">{{ getOccupancyRate() }}%</p>
-          <p class="text-green-100 text-sm mt-2">{{ stats.rentedProperties }} de {{ stats.totalProperties }} propiedades</p>
-        </div>
-        
-        <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-lg text-white">
-          <h3 class="text-lg font-semibold mb-2">Precio Promedio</h3>
-          <p class="text-3xl font-bold">{{ formatPrice(getAveragePrice()) }}</p>
-          <p class="text-purple-100 text-sm mt-2">Por propiedad</p>
-        </div>
-      </div>
-      
-      <!-- Chart Placeholder -->
-      <div class="bg-gray-50 rounded-lg p-8 text-center">
-        <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Gráficos de Rendimiento</h3>
-        <p class="text-gray-500">Los gráficos detallados se mostrarán aquí una vez implementados.</p>
-      </div>
-    </div>
-
-    <!-- Settings Tab Content -->
-    <div *ngIf="activeTab === 'settings'" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <h2 class="text-xl font-semibold mb-6 text-gray-900">Configuración</h2>
-      
-      <!-- Profile Settings -->
-      <div class="mb-8">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Información del Perfil</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
-            <input 
-              type="text" 
-              [value]="userInfo.name"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <input 
-              type="email" 
-              [value]="userInfo.email"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-          </div>
-        </div>
-      </div>
-      
-      <!-- Notification Settings -->
-      <div class="mb-8">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Notificaciones</h3>
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <h4 class="text-sm font-medium text-gray-900">Notificaciones por Email</h4>
-              <p class="text-sm text-gray-500">Recibir notificaciones sobre nuevas propiedades y cambios de estado</p>
-            </div>
-            <button class="bg-indigo-600 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              <span class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-            </button>
-          </div>
-          
-          <div class="flex items-center justify-between">
-            <div>
-              <h4 class="text-sm font-medium text-gray-900">Reportes Semanales</h4>
-              <p class="text-sm text-gray-500">Recibir resumen semanal de actividad</p>
-            </div>
-            <button class="bg-gray-200 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              <span class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Save Button -->
-      <div class="flex justify-end">
-        <button 
-          (click)="saveSettings()"
-          class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
-        >
-          Guardar Cambios
+      <!-- Action Buttons -->
+      <div class="flex justify-between items-center pt-6 border-t" [ngStyle]="{ 'border-color': colors.borderColor }">
+        <button class="px-4 py-2 font-medium" [ngStyle]="{ color: colors.textLight }">
+          Cancelar
         </button>
+
+        <div class="flex space-x-4">
+          <button class="px-4 py-2 bg-gray-100 rounded font-medium" [ngStyle]="{ color: colors.textDark }">
+            Resetear
+          </button>
+          <button (click)="saveSettings()" class="px-6 py-2 rounded font-medium text-white" [ngStyle]="{ 'background-color': colors.primary }">
+            Guardar Cambios
+          </button>
+        </div>
       </div>
     </div>
-
   </div>
 </div>
